@@ -7,7 +7,7 @@ param(
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'scripts\Common.ps1')
 if ($env:MULTICA_TASK_ID -or $env:MULTICA_TASK_CONFIG_ROOT) { throw 'Execute a desinstalação manualmente na sessão do Windows, fora de uma tarefa de agente.' }
-$state = Get-Content -LiteralPath (Join-Path $InstallRoot 'installation.json') -Raw | ConvertFrom-Json
+$state = Get-Content -LiteralPath (Join-Path $InstallRoot 'installation.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $desktopExe = [IO.Path]::GetFullPath($state.executable)
 $runtime = Get-EngineRuntime $desktopExe
 $engine = Join-Path $PSScriptRoot 'lib\engine.cjs'

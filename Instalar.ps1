@@ -11,7 +11,7 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'scripts\Common.ps1')
 if (-not [Environment]::Is64BitProcess) { throw 'Abra o PowerShell de 64 bits.' }
 if (-not $PrepareOnly -and ($env:MULTICA_TASK_ID -or $env:MULTICA_TASK_CONFIG_ROOT)) { throw 'Execute este instalador manualmente na sessão do Windows, fora de uma tarefa de agente. Agentes podem validar com -PrepareOnly.' }
-$manifest = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'compatibility.json') -Raw | ConvertFrom-Json
+$manifest = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'compatibility.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $desktopExe = Find-Multica $MulticaPath
 $runtime = Get-EngineRuntime $desktopExe
 $engine = Join-Path $PSScriptRoot 'lib\engine.cjs'

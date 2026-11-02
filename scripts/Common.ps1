@@ -38,17 +38,34 @@ function Get-EngineRuntime([string]$DesktopExe) {
 
 function Invoke-ExtensionEngine($Runtime, [string]$EnginePath, $Request) {
     $requestFile = Join-Path ([IO.Path]::GetTempPath()) ('multica-extensoes-' + [Guid]::NewGuid().ToString('N') + '.json')
-    $oldElectron = [Environment]::GetEnvironmentVariable('ELECTRON_RUN_AS_NODE','Process')
+    $process = New-Object Diagnostics.Process
     try {
         [IO.File]::WriteAllText($requestFile, ($Request | ConvertTo-Json -Depth 8), (New-Object Text.UTF8Encoding($false)))
-        if ($Runtime.Electron) { [Environment]::SetEnvironmentVariable('ELECTRON_RUN_AS_NODE','1','Process') }
-        $output = & $Runtime.Path $EnginePath --request $requestFile
-        $exitCode = $LASTEXITCODE
-        $result = ($output -join "`n") | ConvertFrom-Json
+        $process.StartInfo.FileName = $Runtime.Path
+        $process.StartInfo.Arguments = '"' + $EnginePath + '" --request "' + $requestFile + '"'
+        $process.StartInfo.UseShellExecute = $false
+        $process.StartInfo.CreateNoWindow = $true
+        $process.StartInfo.RedirectStandardOutput = $true
+        $process.StartInfo.RedirectStandardError = $true
+        $process.StartInfo.StandardOutputEncoding = [Text.Encoding]::UTF8
+        $process.StartInfo.StandardErrorEncoding = [Text.Encoding]::UTF8
+        if ($Runtime.Electron) {
+            $process.StartInfo.EnvironmentVariables['ELECTRON_RUN_AS_NODE']='1'
+            $process.StartInfo.EnvironmentVariables['ELECTRON_NO_ASAR']='1'
+        }
+        if (-not $process.Start()) { throw 'Não foi possível iniciar o validador local.' }
+        $stdout = $process.StandardOutput.ReadToEndAsync()
+        $stderr = $process.StandardError.ReadToEndAsync()
+        $process.WaitForExit()
+        $output = $stdout.GetAwaiter().GetResult()
+        $diagnostics = $stderr.GetAwaiter().GetResult()
+        $exitCode = $process.ExitCode
+        try { $result = $output | ConvertFrom-Json }
+        catch { throw 'O validador local não retornou JSON. Confira se o runtime do Multica ou o Node.js estão completos.' }
         if ($exitCode -ne 0 -or -not $result.ok) { throw $result.error }
         return $result.data
     } finally {
-        [Environment]::SetEnvironmentVariable('ELECTRON_RUN_AS_NODE',$oldElectron,'Process')
+        $process.Dispose()
         if (Test-Path -LiteralPath $requestFile) { Remove-Item -LiteralPath $requestFile -Force }
     }
 }
