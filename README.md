@@ -7,7 +7,7 @@ Instalador independente para adicionar **Docs**, **Editar com IA**, **Marketplac
 ## Instalar
 
 1. Instale o [Multica Desktop](https://multica.ai) normalmente.
-2. Baixe `multica-extensoes-1.2.1-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/latest).
+2. Baixe o pacote correspondente à versão publicada na [release](https://github.com/cspgabriel/multica-extensoes/releases/latest).
 3. Extraia o ZIP e execute **Instalar.cmd**.
 4. Confirme a instalação. A interface será reaberta com os novos itens abaixo de Runtimes.
 
@@ -38,6 +38,8 @@ Os caminhos são detectados no computador de quem instala. A pasta padrão dos m
 - **Docs:** leitura, editor Markdown, histórico e proteção contra gravações concorrentes.
 - **Editar com IA:** escolha um agente local e descreva uma alteração. O envio cria uma issue em todo no workspace atual e inicia trabalho real do agente selecionado.
 - **Marketplace Composio:** por padrão, mostra apps sem autenticação ou com OAuth gerenciado, que dispensam configuração no painel Composio. O filtro permite mostrar todas as integrações ou apenas as que exigem configuração no painel; funciona junto com busca, categorias e paginação. A autorização OAuth termina no navegador.
+- **Conversar com agente:** nos cards conectados e em Minhas conexões, escolha o agente e a conta para abrir um novo chat. O contexto vai para o rascunho, sem enviar uma mensagem ou criar uma issue.
+- **Plugins da conversa:** botão **Plugins** no chat completo e no chat flutuante. Mostra plugins nativos do Multica, conexões Composio e servidores do workspace. Permite habilitar plugins no workspace e atribuir servidores ao agente, conforme as permissões do usuário. **Usar na conversa** preserva o rascunho e os anexos. Veja [Plugins no chat](docs/plugins-chat.md).
 - **Pool de Contas IA:** consulta os provedores locais suportados e oferece os controles dos respectivos CLIs. Provedores sem CLI ou login podem apresentar erro ou lista vazia.
 
 Nenhuma conta ou credencial acompanha o pacote. Configure **sua própria chave Composio** e o **ID de usuário do seu projeto** no marketplace. Chaves fornecidas pela interface são protegidas pelo usuário atual do Windows. Conectar uma conta não instala automaticamente servidores MCP em todos os agentes.
@@ -87,9 +89,11 @@ npm run package
 
 Os testes cobrem o formato ASAR, geração e validação do patch, instalação, reinstalação sem duplicação, reversão por hash, recusa de builds desconhecidos, documentos concorrentes e isolamento das conexões Composio.
 
+O QA opcional de interface usa `npm run test:browser`, com Playwright, Chromium, React e React DOM disponíveis no ambiente de desenvolvimento. Executa cenários com dados simulados e grava evidências em `dist/qa-chat`; não acessa contas reais. No Windows pode reutilizar somente os estilos do aplicativo instalado; `MEXT_QA_ARCHIVE` permite selecionar outro ASAR para os estilos. Essas ferramentas de teste não fazem parte das dependências de execução da extensão.
+
 O comando de empacotamento, executado no Windows, gera o ZIP, o bootstrap e `SHA256SUMS.txt` em `dist`.
 
-Os fontes instalados ficam em `versions/1.2.1`. Edite a interface em `src/ui`, o backend em `src/main` e o Pool em `pool`. Os documentos ficam em `data/docs`. Alterar o backend exige reiniciar a interface; menu e rotas exigem gerar um novo patch a partir do backup verificado. Leia [Manutenção com IA](docs/manutencao-ia.md).
+Os fontes instalados ficam em `versions/<versão>`. Edite a interface em `src/ui`, o backend em `src/main` e o Pool em `pool`. Os documentos ficam em `data/docs`. Alterar o backend exige reiniciar a interface; menu, rotas e integração com o chat exigem gerar um novo patch a partir do backup verificado. Leia [Manutenção com IA](docs/manutencao-ia.md).
 
 ## Privacidade e distribuição
 
