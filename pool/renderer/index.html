@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pool de Contas IA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Pool de Contas IA</h1>
+      <p class="muted" id="updated">Carregando…</p>
+    </div>
+    <div class="summary" id="summary"></div>
+    <button class="btn primary" id="refresh" type="button">Atualizar</button>
+  </header>
+
+  <main>
+    <section class="pool" id="pool-claude" data-pool="claude">
+      <div class="pool-head">
+        <div class="pool-title">
+          <span class="dot claude"></span>
+          <h2>Claude</h2>
+          <span class="muted">cswap</span>
+        </div>
+        <div class="pool-controls">
+          <label class="switch" title="Troca automática de conta (tarefa cswap-auto)">
+            <input type="checkbox" data-role="auto">
+            <span class="track"></span>
+            <span data-role="auto-label">Failover</span>
+          </label>
+          <label class="threshold" title="Troca quando a conta ativa passar deste uso">
+            Limite <input type="number" min="50" max="100" step="1" data-role="threshold">%
+          </label>
+          <button class="btn" type="button" data-action="best">Trocar p/ melhor</button>
+          <button class="btn" type="button" data-action="add">+ Conta</button>
+          <button class="btn ghost" type="button" data-action="run" title="Roda a tarefa de failover agora">Rodar agora</button>
+          <button class="btn ghost" type="button" data-action="terminal" title="Abre um terminal com o CLI">Terminal</button>
+          <button class="btn ghost" type="button" data-action="folder" title="Abre a pasta de dados no Explorer">Pasta</button>
+          <button class="btn ghost" type="button" data-action="log">Log</button>
+        </div>
+      </div>
+      <div class="cards" data-role="cards"></div>
+    </section>
+
+    <section class="pool" id="pool-codex" data-pool="codex">
+      <div class="pool-head">
+        <div class="pool-title">
+          <span class="dot codex"></span>
+          <h2>Codex</h2>
+          <span class="muted">codex-auth</span>
+        </div>
+        <div class="pool-controls">
+          <label class="switch" title="Troca automática de conta (tarefa codex-auth-auto, a cada 5 min)">
+            <input type="checkbox" data-role="auto">
+            <span class="track"></span>
+            <span data-role="auto-label">Failover</span>
+          </label>
+          <label class="threshold" title="Troca quando a conta ativa passar deste uso">
+            Limite <input type="number" min="50" max="100" step="1" data-role="threshold">%
+          </label>
+          <button class="btn" type="button" data-action="best">Trocar p/ melhor</button>
+          <button class="btn" type="button" data-action="add">+ Conta</button>
+          <button class="btn ghost" type="button" data-action="run" title="Roda a tarefa de failover agora">Rodar agora</button>
+          <button class="btn ghost" type="button" data-action="terminal" title="Abre um terminal com o CLI">Terminal</button>
+          <button class="btn ghost" type="button" data-action="folder" title="Abre a pasta de dados no Explorer">Pasta</button>
+          <button class="btn ghost" type="button" data-action="log">Log</button>
+        </div>
+      </div>
+      <div class="cards" data-role="cards"></div>
+    </section>
+
+    <section class="pool" id="pool-antigravity" data-pool="antigravity">
+      <div class="pool-head">
+        <div class="pool-title">
+          <span class="dot antigravity"></span>
+          <h2>Antigravity CLI</h2>
+          <span class="muted">agy</span>
+        </div>
+        <div class="pool-controls">
+          <label class="switch" title="Troca automática de conta (tarefa antigravity-auto)">
+            <input type="checkbox" data-role="auto">
+            <span class="track"></span>
+            <span data-role="auto-label">Failover</span>
+          </label>
+          <label class="threshold" title="Troca quando a conta ativa passar deste uso">
+            Limite <input type="number" min="50" max="100" step="1" data-role="threshold">%
+          </label>
+          <button class="btn" type="button" data-action="best">Trocar p/ melhor</button>
+          <button class="btn" type="button" data-action="add">+ Conta</button>
+          <button class="btn ghost" type="button" data-action="run" title="Roda a tarefa de failover agora">Rodar agora</button>
+          <button class="btn ghost" type="button" data-action="terminal" title="Abre um terminal com o CLI">Terminal</button>
+          <button class="btn ghost" type="button" data-action="folder" title="Abre a pasta de dados no Explorer">Pasta</button>
+          <button class="btn ghost" type="button" data-action="log">Log</button>
+        </div>
+      </div>
+      <div class="cards" data-role="cards"></div>
+    </section>
+
+    <section class="pool" id="pool-copilot" data-pool="copilot">
+      <div class="pool-head">
+        <div class="pool-title">
+          <span class="dot copilot"></span>
+          <h2>Copilot CLI</h2>
+          <span class="muted">copilot</span>
+        </div>
+        <div class="pool-controls">
+          <label class="switch" title="Troca automática de conta (tarefa copilot-auto)">
+            <input type="checkbox" data-role="auto">
+            <span class="track"></span>
+            <span data-role="auto-label">Failover</span>
+          </label>
+          <label class="threshold" title="Troca quando a conta ativa passar deste uso">
+            Limite <input type="number" min="50" max="100" step="1" data-role="threshold">%
+          </label>
+          <button class="btn" type="button" data-action="best">Trocar p/ melhor</button>
+          <button class="btn" type="button" data-action="add">+ Conta</button>
+          <button class="btn ghost" type="button" data-action="run" title="Roda a tarefa de failover agora">Rodar agora</button>
+          <button class="btn ghost" type="button" data-action="terminal" title="Abre um terminal com o CLI">Terminal</button>
+          <button class="btn ghost" type="button" data-action="folder" title="Abre a pasta de dados no Explorer">Pasta</button>
+          <button class="btn ghost" type="button" data-action="log">Log</button>
+        </div>
+      </div>
+      <div class="cards" data-role="cards"></div>
+    </section>
+
+    <section class="pool" id="pool-hermes" data-pool="hermes">
+      <div class="pool-head">
+        <div class="pool-title">
+          <span class="dot hermes"></span>
+          <h2>Hermes CLI</h2>
+          <span class="muted">hermes auth · pool por provedor</span>
+        </div>
+        <div class="pool-controls">
+          <button class="btn" type="button" data-action="reset-all" title="Limpa o bloqueio (429/cooldown) de todas as credenciais">Limpar bloqueios</button>
+          <button class="btn" type="button" data-action="add">+ Credencial</button>
+          <button class="btn ghost" type="button" data-action="status">Status</button>
+          <button class="btn ghost" type="button" data-action="terminal">Terminal</button>
+          <button class="btn ghost" type="button" data-action="folder">Pasta</button>
+        </div>
+      </div>
+      <div class="cards" data-role="cards"></div>
+    </section>
+
+    <section class="pool" id="pool-opencode" data-pool="opencode">
+      <div class="pool-head">
+        <div class="pool-title">
+          <span class="dot opencode"></span>
+          <h2>OpenCode CLI</h2>
+          <span class="muted">opencode · provedores + plugin Antigravity</span>
+        </div>
+        <div class="pool-controls">
+          <button class="btn" type="button" data-action="add">+ Conexão</button>
+          <button class="btn ghost" type="button" data-action="terminal">Terminal</button>
+          <button class="btn ghost" type="button" data-action="folder">Pasta</button>
+        </div>
+      </div>
+      <div class="cards" data-role="cards"></div>
+    </section>
+  </main>
+
+  <dialog id="dialog">
+    <form method="dialog">
+      <h3 id="dialog-title"></h3>
+      <pre id="dialog-body"></pre>
+      <menu>
+        <button class="btn" value="cancel" id="dialog-cancel">Fechar</button>
+        <button class="btn danger" value="ok" id="dialog-ok" hidden>Confirmar</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="bridge.js"></script>
+  <script src="app.js"></script>
+  <script src="pool-tools.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "extensionVersion": "1.0.0",
+  "platform": "win32",
+  "architectures": ["x64"],
+  "multicaVersion": "0.7.2",
+  "originalArchiveSha256": ["024ea5d9e22d04f41663171d1ba6edef60fe1631c3a0b32d828473de28b38f37"],
+  "note": "Somente o build Windows x64 verificado. Outros builds são recusados antes da instalação. Nenhum fuse, assinatura ou executável é alterado."
+}

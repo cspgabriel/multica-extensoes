@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.test-output*
+data/
+backups/
+*.asar
+*.exe
+*.log
+*.env
+.env*
+installation.json
+*.tmp
