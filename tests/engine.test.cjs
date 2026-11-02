@@ -26,6 +26,13 @@ var sidebar={children: aiTeamNav.map((item) => {
 return {children: t(($) => $.nav[item.labelKey])};
 })};
 /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarFooter, {});
+function ThemeProvider({ children, ...props }) {
+return (0, import_jsx_runtime.jsx)(J$4, {
+\t\t...props,
+children
+});
+}
+//#endregion
 var appRoutes = [{
 \t\t\t\tpath: "runtimes",
 element: null
@@ -56,7 +63,7 @@ function fixture() {
   const archive = path.join(resources, 'app.asar');
   const executable = path.join(app, 'Multica.exe');
   fs.writeFileSync(executable, Buffer.concat([Buffer.from('FAKE-PE-FOR-TESTS\0dL7pKGdnNz796PbbjQWNKmHXBZaB9tsX'), Buffer.from([1,9,49,48,49,49,48,48,48,49,49])]));
-  writeArchive(archive, { 'package.json': JSON.stringify({ name: '@multica/desktop', version: '0.7.2' }), 'out/main/index.js': nativeI18n.main, 'out/renderer/index.html': '<script type="module" src="./assets/index-fixture.js"></script>', 'out/renderer/assets/index-fixture.js': fixtureBundle+nativeI18n.renderer, 'unchanged.txt': 'payload preservado' });
+  writeArchive(archive, { 'package.json': JSON.stringify({ name: '@multica/desktop', version: '0.7.2' }), 'out/main/index.js': nativeI18n.main, 'out/renderer/index.html': '<link rel="stylesheet" href="./assets/fixture.css"><script type="module" src="./assets/index-fixture.js"></script>', 'out/renderer/assets/fixture.css': ':root{--background:white}', 'out/renderer/assets/index-fixture.js': fixtureBundle+nativeI18n.renderer, 'unchanged.txt': 'payload preservado' });
   const originalHash = digest(fs.readFileSync(archive));
   const sourceRoot=path.join(root,'versions','1.0.0');
   const catalogueRoot=path.join(sourceRoot,'src/i18n/pt-BR');
@@ -99,6 +106,8 @@ test('prepare, atomic apply, idempotent inspect and exact restore with personal 
   assert.equal(result.installed,true);
   const modified = openArchive(data.archive);
   assert.match(modified.read('out/renderer/assets/index-fixture.js').toString(),/DesktopLocalFrame/);
+  assert.match(modified.read('out/renderer/assets/index-fixture.js').toString(),/forcedTheme: extensionTheme/);
+  assert.match(modified.read('out/renderer/assets/fixture.css').toString(),/data-multica-theme="aurora"/);
   assert.match(modified.read('out/main/index.js').toString(),/bootstrap\.cjs/);
   assert.equal(modified.entry('native/binary.node').unpacked,true);
   assert.equal(engine.inspect(data).alreadyInstalled,true);

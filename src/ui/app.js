@@ -328,8 +328,16 @@
     renderDoc();
   }
   document.getElementById('nav-docs').addEventListener('click', () => navigate('docs'));
+  document.getElementById('nav-themes').addEventListener('click', () => navigate('themes'));
   document.getElementById('ai-open').addEventListener('click', () => aiDialog());
   document.getElementById('settings-open').addEventListener('click', settings);
-  const begin = page === 'docs' ? docs().then(() => { if (query.get('ai') === '1') return aiDialog(); }) : marketplace();
+  let begin;
+  if (page === 'themes') {
+    document.getElementById('breadcrumb').textContent = 'Multica / Temas';
+    document.getElementById('ai-open').hidden = true;
+    document.getElementById('settings-open').hidden = true;
+    document.getElementById('nav-themes').setAttribute('aria-current','page');
+    begin = Promise.resolve().then(() => MulticaThemeGallery.render(content));
+  } else begin = page === 'docs' ? docs().then(() => { if (query.get('ai') === '1') return aiDialog(); }) : marketplace();
   begin.catch(error => { content.replaceChildren(el('div', { class: 'error', text: error.message })); content.setAttribute('aria-busy', 'false'); });
 })();

@@ -1,13 +1,13 @@
 # Multica Extensões
 
-Instalador independente para adicionar **Docs**, **Editar com IA**, **Marketplace Composio** e **Pool de Contas IA** ao Multica Desktop no Windows.
+Instalador independente para adicionar **Docs**, **Editar com IA**, **Marketplace Composio**, **Pool de Contas IA** e **10 temas** ao Multica Desktop no Windows.
 
 **Primeira versão: Multica Desktop 0.7.2, Windows x64, build verificado.** Outras versões e pacotes modificados são recusados antes de alterar o aplicativo. Não distribui o Multica e não altera seu executável, assinatura ou fuses.
 
 ## Instalar
 
 1. Instale o [Multica Desktop](https://multica.ai) normalmente.
-2. Baixe `multica-extensoes-1.3.0-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/latest).
+2. Baixe o pacote da versão publicada na [release](https://github.com/cspgabriel/multica-extensoes/releases/latest).
 3. Extraia o ZIP e execute **Instalar.cmd**.
 4. Confirme a instalação. A interface será reaberta com os novos itens abaixo de Runtimes.
 
@@ -36,6 +36,7 @@ Os caminhos são detectados no computador de quem instala. A pasta padrão dos m
 ## Recursos
 
 - **Português do Brasil:** 25 catálogos e 6.942 entradas da interface, seletor de idioma, calendário e diálogos do desktop. O idioma é ativado localmente na primeira abertura após instalar. Veja [Tradução PT-BR](docs/traducao-pt-br.md).
+- **Temas:** dez paletas — Aurora, Grafite, Oceano, Floresta, Ametista, Café, Porcelana, Areia, Jardim e Céu — para a interface nativa e os módulos locais. A página **Temas** oferece prévias, busca, filtros, seleção persistente neste desktop e restauração da aparência original. Veja [Temas](docs/temas.md).
 - **Docs:** leitura, editor Markdown, histórico e proteção contra gravações concorrentes.
 - **Editar com IA:** escolha um agente local e descreva uma alteração. O envio cria uma issue em todo no workspace atual e inicia trabalho real do agente selecionado.
 - **Marketplace Composio:** por padrão, mostra apps sem autenticação ou com OAuth gerenciado, que dispensam configuração no painel Composio. O filtro permite mostrar todas as integrações ou apenas as que exigem configuração no painel; funciona junto com busca, categorias e paginação. A autorização OAuth termina no navegador.
@@ -85,6 +86,8 @@ Não há dependências npm. Com Node.js 22+:
 npm test
 npm run package
 ```
+
+Para editar as paletas, altere `src/themes/catalogue.js` e rode `npm run build:themes`. `npm run preview:themes` exporta uma galeria HTML independente. O QA opcional `npm run test:themes:browser` requer Playwright e Chromium disponíveis no ambiente de desenvolvimento e não acessa contas reais.
 
 Os testes cobrem o formato ASAR, geração e validação do patch, instalação, reinstalação sem duplicação, reversão por hash, recusa de builds desconhecidos, documentos concorrentes e isolamento das conexões Composio.
 

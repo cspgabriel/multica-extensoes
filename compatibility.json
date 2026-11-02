@@ -1,5 +1,5 @@
 {
-  "extensionVersion": "1.3.0",
+  "extensionVersion": "1.4.0",
   "platform": "win32",
   "architectures": ["x64"],
   "multicaVersion": "0.7.2",

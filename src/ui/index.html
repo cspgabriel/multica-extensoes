@@ -1,11 +1,16 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme-surface="module">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://logos.composio.dev https://assets.composio.dev data:; connect-src 'none'; object-src 'none'; base-uri 'none'">
   <title>Recursos do Multica</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../themes/themes.css">
+  <link rel="stylesheet" href="../themes/gallery.css">
+  <script src="../themes/catalogue.js" defer></script>
+  <script src="../themes/runtime.js" defer></script>
+  <script src="../themes/gallery.js" defer></script>
   <script src="catalogue-client.js" defer></script>
   <script src="app.js" defer></script>
 </head>
@@ -13,6 +18,7 @@
   <header class="topbar">
     <div class="brand"><span class="brand-icon">✳</span><span id="breadcrumb">Marketplace / Composio</span><span class="local-badge">NESTE PC</span></div>
     <nav aria-label="Ações do módulo">
+      <button id="nav-themes" class="button">Temas</button>
       <button id="nav-docs" class="button">Docs</button>
       <button id="ai-open" class="button">✧ Editar com IA</button>
       <button id="settings-open" class="button primary">Configurar Composio</button>
