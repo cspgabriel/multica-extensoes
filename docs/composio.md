@@ -20,7 +20,9 @@ Somente as conexões com o ID de usuário configurado são exibidas. Tokens OAut
 
 ## Pedir trabalho a um agente
 
-**Pedir tarefa à IA** cria uma solicitação com o toolkit e sua instrução. O agente precisa ter acesso ao Composio no próprio runtime. O marketplace não instala automaticamente servidores MCP nem replica sua chave para todos os agentes.
+Clique em **Ativar nos meus agentes** para atribuir o MCP e a skill de prioridade aos seus agentes neste workspace. A ativação precisa da sessão do proprietário: o Multica não permite que tarefas de agentes modifiquem a biblioteca ou as atribuições MCP. O painel mostra pendências de runtime, falhas e sincronização automática. Copilot, Antigravity e agentes sem runtime não são apresentados como acesso nativo funcionando.
+
+A sessão descobre as conexões ativas do mesmo ID de usuário sem fixar contas. Conexões novas ficam disponíveis pela descoberta de ferramentas. **Pedir tarefa à IA** cria uma solicitação com o toolkit e sua instrução; use o diagnóstico para verificar o acesso do runtime. Veja [Acesso dos agentes](agentes-composio.md).
 
 ## Referências
 

@@ -25,7 +25,9 @@
   }
   function button(text, onclick, className = 'button') { return el('button', { text, onclick, class: className, type: 'button' }); }
   async function call(channel, payload = {}) {
-    const response = await window.parent.electron.ipcRenderer.invoke('desktop-modules:' + channel, payload);
+    let response;
+    try{response=await window.parent.electron.ipcRenderer.invoke('desktop-modules:' + channel, payload);}
+    catch(error){if(/No handler registered/i.test(error.message))throw new Error('A atualização do acesso dos agentes está pronta. Reabra a interface do Multica quando puder e volte a este painel.');throw error;}
     if (!response.ok) throw new Error(response.error);
     return response.data;
   }
@@ -63,7 +65,7 @@
       const userId = el('input', { value: status.userId, 'aria-label': 'ID de usuário Composio' });
       body.append(field('Chave de API', key, 'Uma nova chave é protegida pelo Windows. O painel nunca exibe a chave salva.'), field('ID de usuário Composio', userId, 'As conexões são filtradas por esta identidade. Para usar conexões existentes, informe o mesmo ID utilizado no seu projeto.'));
       const save = button('Salvar configuração', () => withBusy(save, async () => {
-        await call('composio:configure', { userId: userId.value.trim(), apiKey: key.value.trim() });
+        await call('composio:configure', { ...context, userId: userId.value.trim(), apiKey: key.value.trim() });
         key.value = '';
         modal.close();
         notify('Configuração salva.');
@@ -165,6 +167,34 @@
       renderCards();
     } catch (error) { target.replaceChildren(el('p', { class: 'help', text: error.message })); }
   }
+  async function loadAgentAccess(){
+    const target=document.getElementById('agent-access');
+    if(!target)return;
+    try{
+      const status=await call('composio:agents-status',context);
+      const info=el('div',{},[
+        el('strong',{text:status.enabled?'Composio nos agentes':'Disponibilizar o marketplace para as IAs'}),
+        el('p',{class:'help',text:status.enabled?`${status.assigned}/${status.total} agentes atribuídos · ${status.nativeConfigured} com runtime compatível · ${status.pending.length} exceções`:`${status.total} agentes seus neste workspace · ${status.nativeCapable||0} com runtime compatível. Ativar compartilha as conexões deste usuário Composio e define prioridade de descoberta pelo marketplace.`}),
+        el('p',{class:'help',text:status.automatic?'Sincronização a cada minuto pelo Windows, com este PC ligado; os agentes já configurados acessam o Composio diretamente, inclusive em outros computadores.':status.enabled?'Atribuições feitas. A sincronização automática ainda não foi confirmada.':'Esta ativação precisa da sessão do proprietário do desktop. Não substitui servidores MCP ou instruções individuais.'}),
+      ]);
+      const action=button(status.enabled?'Verificar atribuições':'Ativar nos meus agentes',()=>withBusy(action,async()=>{
+        const label=action.textContent;action.textContent='Configurando agentes…';
+        const poll=setInterval(()=>call('composio:agents-status',context).then(current=>{action.textContent=`Configurando ${current.assigned||0}/${current.total||status.total}…`;}).catch(()=>{}),2500);
+        try{
+          const result=await call(status.enabled?'composio:agents-sync':'composio:agents-enable',{...context,confirmAllAgents:true});
+          notify(result.automaticError||`${result.assigned} atribuições verificadas; ${result.pending.length} exceções de runtime.`,Boolean(result.automaticError));
+          await loadAgentAccess();
+        }finally{clearInterval(poll);action.textContent=label;}
+      }),'button primary');
+      target.replaceChildren(el('div',{class:'agent-access-head'},[info,action]));
+      if(status.pending.length||status.lastError||status.errors?.length){
+        const detail=el('details',{},[el('summary',{text:`Exceções e pendências (${status.pending.length+(status.errors?.length||0)})`})]);
+        if(status.lastError)detail.append(el('p',{class:'error',text:status.lastError}));
+        detail.append(el('ul',{class:'help'},[...status.pending,...(status.errors||[])].map(item=>el('li',{text:`${item.name} · ${item.provider||''}: ${item.reason||item.error}`}))));
+        target.append(detail);
+      }
+    }catch(error){target.replaceChildren(el('p',{class:'help',text:error.message}),button('Tentar verificar agentes',loadAgentAccess));}
+  }
   async function detail(app) {
     const body = openModal(app.name, 'Ferramentas disponíveis nesta integração.');
     const loading = el('p', { class: 'modal-state', text: 'Consultando ferramentas no Composio…' });
@@ -194,10 +224,10 @@
     const connectionsList = el('div', { class: 'connection-list', id: 'connection-list' });
     content.replaceChildren(
       el('section', { class: 'hero' }, [el('div', { class: 'eyebrow', text: 'FERRAMENTAS PARA OS SEUS AGENTES' }), el('div', { class: 'hero-row' }, [el('div', {}, [el('h1', { text: 'Conecte seu próximo superpoder.' }), el('p', { text: 'Descubra integrações, conecte suas contas e leve mais ferramentas para o trabalho com IA.' })]), el('div', { class: 'catalogue-state' }, [el('span', { class: 'dot' }), el('span', { id: 'catalogue-live', text: 'Consultando catálogo…' })])]), el('div', { class: 'search-row' }, [el('div', { class: 'search-wrap' }, [el('span', { text: '⌕', 'aria-hidden': 'true' }), search]), button('Atualizar conexões', () => loadConnections())]), chips]),
-      el('section', { class: 'catalogue-body' }, [el('details', { class: 'connections' }, [el('summary', { id: 'connections-title', text: 'Minhas conexões' }), connectionsList]), el('div', { class: 'catalogue-toolbar' }, [el('strong', { id: 'catalogue-count', text: 'Integrações' }), el('span', { id: 'visible-count', text: 'Carregando…' })]), el('div', { class: 'grid', id: 'app-grid' }), el('div', { class: 'load-more' }, [more]), el('div', { class: 'footer-note', text: 'Catálogo oficial Composio · A autorização das contas é concluída no seu navegador.' })]),
+      el('section', { class: 'catalogue-body' }, [el('section',{class:'connections',id:'agent-access','aria-label':'Acesso dos agentes'},[el('p',{class:'help',text:'Verificando acesso dos agentes…'})]),el('details', { class: 'connections' }, [el('summary', { id: 'connections-title', text: 'Minhas conexões' }), connectionsList]), el('div', { class: 'catalogue-toolbar' }, [el('strong', { id: 'catalogue-count', text: 'Integrações' }), el('span', { id: 'visible-count', text: 'Carregando…' })]), el('div', { class: 'grid', id: 'app-grid' }), el('div', { class: 'load-more' }, [more]), el('div', { class: 'footer-note', text: 'Catálogo oficial Composio · A autorização das contas é concluída no seu navegador.' })]),
     );
     call('composio:categories').then(categories => categories.slice(0, 12).forEach(category => { const chip = button(category.name, () => chooseCategory(category.id, chip), 'chip'); chips.append(chip); })).catch(() => {});
-    await Promise.all([loadCatalogue(), loadConnections()]);
+    await Promise.all([loadCatalogue(), loadConnections(),loadAgentAccess()]);
   }
 
   function inline(text) {

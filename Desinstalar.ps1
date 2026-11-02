@@ -19,6 +19,12 @@ if (-not $Yes) {
 if ($NoRestart -and @(Get-DesktopProcesses $desktopExe).Count) { throw 'Com -NoRestart a interface precisa estar fechada.' }
 $daemonPid=$null
 try {
+    $workerConfig=Join-Path $InstallRoot 'data\agent-worker.json'
+    $workerScript=Join-Path $state.sourceRoot 'src\main\agent-worker.ps1'
+    if((Test-Path -LiteralPath $workerConfig) -and (Test-Path -LiteralPath $workerScript)){
+        & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $workerScript -Mode Unregister -ConfigPath $workerConfig
+        if($LASTEXITCODE -ne 0){throw 'Não foi possível pausar a sincronização dos agentes. A desinstalação foi interrompida.'}
+    }
     if (-not $NoRestart) { $daemonPid=Stop-VerifiedDesktop $desktopExe $state.profile }
     if (@(Get-DesktopProcesses $desktopExe).Count) { throw 'A interface está aberta. Nenhum pacote será restaurado.' }
     Invoke-ExtensionEngine $runtime $engine @{operation='restore';root=$InstallRoot;archive=$state.archive;executable=$desktopExe} | Out-Null

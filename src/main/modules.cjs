@@ -4,6 +4,7 @@ const os = require('node:os');
 const crypto = require('node:crypto');
 const { fileURLToPath } = require('node:url');
 const { execFile } = require('node:child_process');
+const { createAgentAccess } = require('./agent-access.cjs');
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const DOC_ID = /^[a-z0-9][a-z0-9-]{0,79}\.md$/;
@@ -92,13 +93,33 @@ function createService(options = {}) {
     queues.set(input.id, operation);
     try { return await operation; } finally { if (queues.get(input.id) === operation) queues.delete(input.id); }
   }
-  const runCli = options.runCli || ((args, cwd) => new Promise((resolve, reject) => {
+  const runCli = options.runCli || ((args, cwd, stdin) => new Promise((resolve, reject) => {
     const executable = path.join(process.resourcesPath, 'app.asar.unpacked', 'resources', 'bin', 'multica.exe');
-    execFile(executable, ['--profile', options.profile || 'desktop-api.multica.ai', ...args], { cwd, windowsHide: true, timeout: 45000, maxBuffer: 16 * 1024 * 1024 }, (error, stdout) => {
+    const child=execFile(executable, ['--profile', options.profile || 'desktop-api.multica.ai', ...args], { cwd, windowsHide: true, timeout: 45000, maxBuffer: 16 * 1024 * 1024 }, (error, stdout) => {
       if (error) return reject(new Error('O Multica não concluiu a operação. Confira a conexão, as permissões e se o agente está disponível.'));
       try { resolve(JSON.parse(stdout)); } catch { reject(new Error('A resposta do CLI do Multica não era JSON válido.')); }
     });
+    if(stdin!==undefined)child.stdin.end(stdin);
   }));
+  const sourceRoot=options.sourceRoot||path.resolve(__dirname,'../..');
+  const access=createAgentAccess({root,stateRoot,sourceRoot,runCli,api,credentials});
+  function administrativeSession(input){
+    if(process.env.MULTICA_TASK_ID||process.env.MULTICA_TASK_CONFIG_ROOT)throw new Error('O Multica bloqueia alterações de MCP por agentes. Ative pelo botão na sessão do proprietário do desktop.');
+    if(!UUID.test(input.workspaceId||''))throw new Error('Workspace inválido.');
+  }
+  async function configureWorker(workspaceId){
+    const file=path.join(stateRoot,'agent-worker.json');
+    writeAtomic(file,JSON.stringify({root,stateRoot,sourceRoot,profile:options.profile||'desktop-api.multica.ai',executable:process.execPath},null,2));
+    const script=path.join(sourceRoot,'src/main/agent-worker.ps1');
+    const invoke=(mode,stdin)=>new Promise((resolve,reject)=>{
+      const child=execFile('powershell.exe',['-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',script,'-Mode',mode,'-ConfigPath',file],{windowsHide:true,encoding:'utf8',timeout:30000},(error,stdout)=>error?reject(new Error('O Windows não autorizou o sincronizador automático. As atribuições já feitas permanecem; verifique a sessão do proprietário.')):resolve(stdout.trim()));
+      if(stdin!==undefined)child.stdin.end(stdin);
+    });
+    const {apiKey,userId}=credentials();
+    await invoke('Protect',JSON.stringify({apiKey,userId}));
+    await invoke('Register');
+    access.setAutomatic(workspaceId,true);
+  }
   function workspace(input) { if (!UUID.test(input.workspaceId || '')) throw new Error('Selecione um workspace antes de pedir alterações à IA.'); return input.workspaceId; }
   async function localAgents(input) {
     const workspaceId = workspace(input);
@@ -145,7 +166,23 @@ function createService(options = {}) {
     'ai:agents': localAgents,
     'ai:request': requestAi,
     'composio:status': () => { const value = credentials(); return { configured: Boolean(value.apiKey), source: value.source, userId: value.userId }; },
-    'composio:configure': input => {
+    'composio:agents-status': input => { workspace(input); const status=access.status(input.workspaceId); return status.enabled?status:access.preview(input.workspaceId); },
+    'composio:agents-enable': async input => {
+      administrativeSession(input);
+      if(input.confirmAllAgents!==true)throw new Error('Confirme a atribuição aos seus agentes antes de ativar.');
+      await access.sync({...input,activate:true,force:true});
+      try{await configureWorker(input.workspaceId);}catch(error){return {...access.status(input.workspaceId),automaticError:error.message};}
+      return access.status(input.workspaceId);
+    },
+    'composio:agents-sync': async input => {
+      administrativeSession(input);
+      const result=await access.sync({...input,force:true});
+      if(result.enabled&&!result.automatic){
+        try{await configureWorker(input.workspaceId);}catch(error){return {...access.status(input.workspaceId),automaticError:error.message};}
+      }
+      return access.status(input.workspaceId);
+    },
+    'composio:configure': async input => {
       const userId = clean(input.userId, 200).trim();
       if (!userId || /[\x00-\x1f]/.test(userId)) throw new Error('Informe um ID de usuário válido para o Composio.');
       const next = { ...loadConfig(), userId };
@@ -157,6 +194,11 @@ function createService(options = {}) {
       writeAtomic(configPath, JSON.stringify(next, null, 2));
       catalogueCache.clear();
       categoryCache = null;
+      if(UUID.test(input.workspaceId||'')&&access.status(input.workspaceId).enabled){
+        administrativeSession(input);
+        await access.sync({workspaceId:input.workspaceId,force:true});
+        await configureWorker(input.workspaceId);
+      }
       return handlers['composio:status']();
     },
     'composio:catalogue': async (input = {}) => {
