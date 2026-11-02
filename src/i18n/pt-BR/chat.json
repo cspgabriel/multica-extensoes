@@ -1,0 +1,256 @@
+{
+  "page": {
+    "title": "Conversas",
+    "select_prompt": "Escolha uma conversa ou inicie uma nova com +",
+    "agent_link_no_access": "Você não tem acesso para conversar com este agente."
+  },
+  "fab": {
+    "running": "A Multica está trabalhando...",
+    "unread_one": "{{count}} chat não lido",
+    "unread_other": "{{count}} chats não lidos",
+    "default": "Perguntar à Multica"
+  },
+  "input": {
+    "placeholder_no_agent": "Crie um agente para começar a conversar",
+    "placeholder_archived": "Esta sessão está arquivada",
+    "placeholder_archived_agent": "Este agente foi arquivado",
+    "placeholder_runtime_required": "Vincule um ambiente de execução para continuar",
+    "placeholder_access_revoked": "Você não tem mais permissão para comandar este agente.",
+    "placeholder_named": "Mensagem para {{name}}…",
+    "placeholder_default": "Comece uma mensagem…",
+    "send_tooltip": "Enviar",
+    "queue_send_tooltip": "Enfileirar mensagem",
+    "stop_tooltip": "Parar",
+    "send_failed_toast": "Falha ao enviar a mensagem",
+    "send_blocked_toast": "Mensagem não enviada — você não tem mais permissão para usar este agente",
+    "runtime_required_toast": "Mensagem não enviada — vincule um ambiente de execução a este agente primeiro",
+    "runtime_access_denied_toast": "Mensagem não enviada - este agente não pode correr em seu tempo privado. Faça o tempo de execução público, ou rebind/copie o agente para um tempo de execução que seu proprietário pode usar",
+    "attachment_bind_failed_toast": "Mensagem enviada, mas os arquivos não foram anexados. Tente novamente em instantes.",
+    "add_tooltip": "Adicionar",
+    "upload_file": "Imagem ou arquivos",
+    "project_context": "Contexto do projeto",
+    "change_project_context": "Alterar contexto do projeto",
+    "remove_project_context": "Remover contexto do projeto",
+    "no_projects": "Ainda não há projetos",
+    "project_context_unsupported": "A descrição do projeto não será aplicada — o daemon deste agente precisa de uma atualização"
+  },
+  "queue": {
+    "title_one": "{{count}} mensagem na fila",
+    "title_other": "{{count}} mensagens na fila",
+    "clear": "Limpar tudo",
+    "steer": "Direcionar",
+    "steer_unavailable": "Direcionar fica disponível depois que a resposta atual começa",
+    "steer_no_permission": "Você não tem mais permissão para comandar este agente.",
+    "steer_unavailable_toast": "Direcionar está indisponível. Atualizando a fila.",
+    "edit": "Editar mensagem na fila",
+    "remove": "Remover mensagem na fila",
+    "more": "Mais ações da fila",
+    "fallback": "Mensagem na fila",
+    "action_failed_toast": "Não foi possível atualizar a mensagem na fila"
+  },
+  "message_list": {
+    "show_details": "Mostrar detalhes",
+    "replied_in": "Respondeu em {{elapsed}}",
+    "failed_after": "Falhou após {{elapsed}}",
+    "finished_in": "Concluído em {{elapsed}}",
+    "no_response": "O agente terminou esta rodada sem uma resposta em texto.",
+    "failure": {
+      "agent_error": "O agente encontrou um erro e não conseguiu concluir a resposta. Tente novamente.",
+      "timeout": "O agente demorou demais e parou antes de terminar. Tente novamente ou divida seu pedido em etapas menores.",
+      "codex_semantic_inactivity": "O agente ficou inativo e parou antes de terminar. Tente novamente.",
+      "runtime_offline": "O agente está offline no momento, então não conseguiu responder. Tente novamente quando ele estiver online.",
+      "runtime_access_denied": "Este agente não pode correr em seu tempo de execução privado, então ele não poderia responder. Tornar o tempo de execução público, ou religar/copiar o agente para um tempo de execução que seu dono pode usar.",
+      "runtime_recovery": "O agente reiniciou antes de conseguir terminar. Tente novamente.",
+      "runtime_access_revoked": "O acesso foi revogado. Amarre o agente a um tempo de execução acessível antes de começar outra execução.",
+      "manual": "Esta resposta foi cancelada.",
+      "skill_bundle_unavailable": "As habilidades do agente não puderam ser baixadas, então ele nunca chegou a iniciar. Geralmente é um problema de conexão — tente novamente.",
+      "runtime_cli_timeout": "O CLI Openclaw local não respondeu a tempo, então essa execução nunca começou. É um tempo de inicialização local, não um problema de rede - tentar de novo não vai ajudar até que o CLI fique mais rápido ou o tempo de espera é aumentado (MULTICA_OPENCLAW_CLI_TIMEOUT).",
+      "environment_prepare_failed": "A máquina que comandava o agente não conseguiu montar essa execução, então nunca começou. O erro abaixo diz o que falhou lá, muitas vezes espaço em disco, uma permissão, uma pasta ainda em uso, ou uma configuração local que não podia ser lida. Não é o agente ou o fornecedor de modelos.",
+      "provider_network": "A conexão com o provedor do modelo caiu antes da resposta terminar. Verifique sua rede e tente novamente.",
+      "provider_auth_or_access": "A conta do modelo deste agente não está mais autenticada. Faça login novamente e tente de novo.",
+      "provider_quota_limit": "A conta do modelo deste agente ficou sem crédito. Recarregue ou troque de conta e tente novamente.",
+      "provider_capacity_or_rate_limit": "O provedor do modelo está sobrecarregado ou limitando a taxa desta conta. Tente novamente em instantes.",
+      "context_overflow": "Esta conversa ficou longa demais para o modelo. Inicie uma nova sessão ou divida seu pedido em etapas menores.",
+      "runtime_missing_executable": "A CLI do agente não foi encontrada nesta máquina. Verifique se está instalada e no PATH, depois tente novamente.",
+      "runtime_version_unsupported": "A CLI do agente é antiga demais para este ambiente de execução. Atualize-a e tente novamente.",
+      "fallback": "Algo deu errado e o agente não conseguiu concluir a resposta. Tente novamente."
+    },
+    "tools_one": "{{count}} ferramenta",
+    "tools_other": "{{count}} ferramentas",
+    "tool_result_named": "resultado de {{tool}}: ",
+    "tool_result_unnamed": "resultado: ",
+    "process_steps_one": "{{count}} etapa",
+    "process_steps_other": "{{count}} etapas",
+    "copy_action": "Copiar",
+    "copied_toast": "Copiado",
+    "copy_failed_toast": "Falha ao copiar",
+    "loading_older": "Carregando mensagens anteriores…",
+    "quick_actions_heading": "Perguntas de acompanhamento",
+    "quick_actions_aria": "Sugestão de acompanhamento.",
+    "quick_actions_regenerate": "Gerar novas sugestões",
+    "quick_actions_regenerate_failed": "Não foi possível atualizar as sugestões. Tente novamente."
+  },
+  "session_history": {
+    "untitled": "Sem título",
+    "time": {
+      "just_now": "agora mesmo",
+      "minutes": "há {{count}}min",
+      "hours": "há {{count}}h",
+      "days": "há {{count}}d"
+    },
+    "row_delete_aria": "Excluir sessão de chat",
+    "row_rename_aria": "Renomear sessão de chat",
+    "row_stop_aria": "Parar execução atual",
+    "stop_action": "Parar",
+    "row_subtitle": {
+      "working": "Trabalhando",
+      "completed": "Concluído",
+      "new_reply": "Nova resposta"
+    },
+    "stop_dialog": {
+      "title": "Parar esta execução?",
+      "description_with_title": "Isso vai cancelar a task atual do agente em \"{{title}}\". A saída parcial vai continuar no chat.",
+      "description_default": "Isso vai cancelar a task atual do agente. A saída parcial vai continuar no chat.",
+      "cancel": "Manter em execução",
+      "confirm": "Parar execução",
+      "confirming": "Parando..."
+    },
+    "delete_dialog": {
+      "title": "Excluir sessão de chat",
+      "description_with_title": "\"{{title}}\" e suas mensagens serão removidas permanentemente. Essa ação não pode ser desfeita.",
+      "description_default": "Esta sessão de chat e suas mensagens serão removidas permanentemente. Essa ação não pode ser desfeita.",
+      "cancel": "Cancelar",
+      "confirm": "Excluir",
+      "confirming": "Excluindo..."
+    },
+    "row_actions_aria": "Ações de conversa."
+  },
+  "window": {
+    "new_chat_tooltip": "Novo chat",
+    "restore_tooltip": "Restaurar",
+    "expand_tooltip": "Expandir",
+    "minimize_tooltip": "Minimizar",
+    "another_running": "Outro chat está em execução",
+    "another_unread": "Outro chat tem respostas não lidas",
+    "running": "Em execução",
+    "unread": "Não lido",
+    "no_previous": "Nenhum chat anterior",
+    "untitled": "Novo chat",
+    "my_agents": "Meus agentes",
+    "others": "Outros",
+    "no_agents": "Nenhum agente",
+    "history_group": "Histórico de chat",
+    "agent_filter_placeholder": "Buscar agentes...",
+    "agent_needs_runtime": "Precisa de ambiente de execução",
+    "agent_needs_runtime_hint": "Vincule um ambiente de execução antes de iniciar um chat com este agente"
+  },
+  "empty_state": {
+    "first_time_title": "Converse com seus agentes",
+    "first_time_intro": "✨ Eles conhecem seu espaço de trabalho —",
+    "first_time_pillars": "tarefas, projetos, habilidades",
+    "first_time_pillars_suffix": ".",
+    "first_time_actions": "Peça um resumo, planeje seu dia ou passe uma task rápida.",
+    "returning_title_named": "Oi, eu sou {{name}}",
+    "returning_title_default": "Bem-vindo à Multica",
+    "returning_subtitle": "Experimente perguntar",
+    "chat_with_named": "Conversar com {{name}}"
+  },
+  "conversation_starters": {
+    "aria_label": "Começar uma conversa.",
+    "capabilities": {
+      "label": "Em que pode ajudar?",
+      "prompt": "Qual é a melhor forma de ajudar? Dê-me uma visão concisa."
+    },
+    "first_task": {
+      "label": "Sugerir uma primeira tarefa.",
+      "prompt": "Sugerir três questões úteis que eu poderia atribuir a você."
+    },
+    "recommend": {
+      "label": "Recomende uma ação.",
+      "prompt": "Reveja o que sabe sobre meu espaço de trabalho e recomende uma primeira ação útil."
+    },
+    "customize": "Personalizar entradas.",
+    "uploading": "Espere que os uploads terminem antes de usar uma partida.",
+    "draft_in_progress": "Envie ou limpe seu rascunho antes de usar um motor de arranque."
+  },
+  "onboarding_cards": {
+    "aria_label": "Formas de começar",
+    "cta": "Iniciar",
+    "board": {
+      "title": "Monte um quadro em minutos",
+      "desc": "Me diga o objetivo — eu crio o projeto, divido as tarefas e defino as prioridades.",
+      "prompt": "Transforme nossos objetivos atuais em um quadro de projeto"
+    },
+    "delegate": {
+      "title": "Me passe uma coisa primeiro",
+      "desc": "Uma pesquisa rápida, por exemplo — os resultados voltam como uma tarefa e um relatório.",
+      "prompt": "Tire uma coisa da minha lista: faça uma pesquisa rápida e me devolva os resultados como um relatório"
+    },
+    "digest": {
+      "title": "Deixe o resumo diário se escrever sozinho",
+      "desc": "Um resumo matinal do progresso do espaço de trabalho, direto na sua inbox.",
+      "prompt": "Configure uma automação diária que publique um resumo matinal do progresso do espaço de trabalho"
+    },
+    "digest_badge": "Diário 9:00"
+  },
+  "no_agent_banner": "Você precisa de um agente para começar a conversar.",
+  "archived_agent_banner": "{{name}} foi arquivado — esta conversa é somente leitura.",
+  "agent_access_revoked_banner": "Você não tem mais permissão para correr. {{name}} - esta conversa é somente para leitura.",
+  "runtime_required_banner": {
+    "fallback_name": "O agente",
+    "message": "{{name}} precisa de um ambiente de execução antes de poder responder.",
+    "action": "Vincular ambiente de execução"
+  },
+  "offline_banner": {
+    "fallback_name": "o agente",
+    "unstable": "A conexão de {{name}} está instável — as respostas podem atrasar.",
+    "offline": "{{name}} está offline — sua mensagem será entregue quando ele voltar."
+  },
+  "status_pill": {
+    "stages": {
+      "offline": "Desconectado",
+      "reconnecting": "Reconectando",
+      "retrying": "Tentando novamente",
+      "queued": "Na fila",
+      "waiting_local_directory": "Aguardando diretório local",
+      "waiting_local_directory_reason": "Esperando {{reason}}",
+      "starting_up": "Iniciando",
+      "thinking": "Raciocínio",
+      "typing": "Digitando"
+    },
+    "tools": {
+      "running_command": "Executando um comando",
+      "reading_files": "Lendo arquivos",
+      "searching_code": "Buscando no código",
+      "making_edits": "Fazendo edições",
+      "searching_web": "Buscando na web",
+      "fallback": "Trabalhando"
+    }
+  },
+  "list": {
+    "typing": "Digitando…",
+    "failed": "Falha ao enviar",
+    "you_prefix": "Você: ",
+    "no_messages": "Ainda não há mensagens",
+    "no_response_preview": "Nenhuma resposta em texto",
+    "quick_agents": "Agentes frequentes",
+    "add": "Adicionar",
+    "add_agent": "Adicionar um agente frequente",
+    "unpin_agent": "Remover dos frequentes",
+    "waiting": "Aguardando resposta",
+    "pin": "Fixar",
+    "unpin": "Desafixar",
+    "pinned": "Fixado",
+    "archive": "Arquivar",
+    "unarchive": "Desarquivar",
+    "archived_title": "Arquivado",
+    "row_actions_aria": "Ações de conversa."
+  },
+  "header": {
+    "view_profile": "Ver perfil do agente",
+    "rename": "Renomear chat",
+    "archive": "Arquivar chat",
+    "unarchive": "Desarquivar chat",
+    "delete": "Excluir chat"
+  }
+}

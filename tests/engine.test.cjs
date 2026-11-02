@@ -7,6 +7,7 @@ const path = require('node:path');
 const { encodeHeader, openArchive, repack, readFuses, digest } = require('../lib/asar.cjs');
 const engine = require('../lib/engine.cjs');
 const compatibility = require('../compatibility.json');
+const nativeI18n = require('./native-i18n-fixture.cjs');
 const fixtureBundle = `
 var known=[
 \t["runtimes"],
@@ -55,9 +56,13 @@ function fixture() {
   const archive = path.join(resources, 'app.asar');
   const executable = path.join(app, 'Multica.exe');
   fs.writeFileSync(executable, Buffer.concat([Buffer.from('FAKE-PE-FOR-TESTS\0dL7pKGdnNz796PbbjQWNKmHXBZaB9tsX'), Buffer.from([1,9,49,48,49,49,48,48,48,49,49])]));
-  writeArchive(archive, { 'package.json': JSON.stringify({ name: '@multica/desktop', version: '0.7.2' }), 'out/main/index.js': 'let electron = require("electron");\n', 'out/renderer/index.html': '<script type="module" src="./assets/index-fixture.js"></script>', 'out/renderer/assets/index-fixture.js': fixtureBundle, 'unchanged.txt': 'payload preservado' });
+  writeArchive(archive, { 'package.json': JSON.stringify({ name: '@multica/desktop', version: '0.7.2' }), 'out/main/index.js': nativeI18n.main, 'out/renderer/index.html': '<script type="module" src="./assets/index-fixture.js"></script>', 'out/renderer/assets/index-fixture.js': fixtureBundle+nativeI18n.renderer, 'unchanged.txt': 'payload preservado' });
   const originalHash = digest(fs.readFileSync(archive));
-  return { temporary, root, archive, executable, originalHash, sourceRoot: path.join(root, 'versions', '1.0.0'), profile: 'test-profile' };
+  const sourceRoot=path.join(root,'versions','1.0.0');
+  const catalogueRoot=path.join(sourceRoot,'src/i18n/pt-BR');
+  fs.mkdirSync(catalogueRoot,{recursive:true});
+  for(const name of fs.readdirSync(path.resolve(__dirname,'../src/i18n/pt-BR')))fs.copyFileSync(path.resolve(__dirname,'../src/i18n/pt-BR',name),path.join(catalogueRoot,name));
+  return { temporary, root, archive, executable, originalHash, sourceRoot, profile: 'test-profile' };
 }
 test('ASAR rebuild preserves payloads and unpacked metadata', () => {
   const data = fixture();

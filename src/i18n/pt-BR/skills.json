@@ -1,0 +1,391 @@
+{
+  "page": {
+    "title": "Habilidades",
+    "learn_more": "Saiba mais →",
+    "new_skill": "Novo habilidade",
+    "search_placeholder": "Buscar habilidades…",
+    "scopes": {
+      "all": {
+        "label": "Todos",
+        "description": "Todos os habilidades neste espaço de trabalho"
+      },
+      "used": {
+        "label": "Em uso",
+        "description": "Habilidades atribuídos a pelo menos um agente"
+      },
+      "unused": {
+        "label": "Não utilizados",
+        "description": "Habilidades não atribuídos a nenhum agente"
+      },
+      "mine": {
+        "label": "Criados por mim",
+        "description": "Habilidades que você criou"
+      }
+    },
+    "empty": {
+      "title": "Nenhum habilidade ainda",
+      "description": "Criar ou importar uma habilidade."
+    },
+    "no_matches": {
+      "title": "Nenhum resultado",
+      "with_query": "Nenhum habilidade corresponde a \"{{query}}\"{{filterSuffix}}.",
+      "with_query_filter_suffix": " neste filtro",
+      "filter_only": "Nenhum habilidade corresponde a este filtro.",
+      "try_different": " Tente uma busca diferente."
+    },
+    "intro_banner": {
+      "title": "Compartilhado com seu espaço de trabalho.",
+      "body": "Qualquer pessoa pode criar um habilidade, importar um a partir de uma URL, ou copiar um do seu ambiente de execução local — e todo agente pode usá-lo.",
+      "highlight": "Habilidades de ambiente de execução local permanecem privados até que você copie um para cá."
+    },
+    "list_error": {
+      "title": "Não foi possível carregar os habilidades",
+      "fallback": "Algo deu errado ao buscar a lista de habilidades.",
+      "retry": "Tentar novamente"
+    },
+    "supporting_data_warning": "Alguns dados do espaço de trabalho não puderam ser carregados. A atribuição de criador, nomes de ambiente de execução ou permissões de edição podem aparecer incompletos."
+  },
+  "table": {
+    "name": "Nome",
+    "created_by": "Adicionado por",
+    "used_by": "Usado por",
+    "source": "Origem",
+    "updated": "Atualizado",
+    "created": "Criado",
+    "lock_tooltip": "Somente leitura — apenas o criador ou admin pode editar",
+    "unused": "— não utilizado",
+    "by_creator": "por {{name}}",
+    "source_manual": "Criado manualmente",
+    "source_runtime_named": "De {{name}}",
+    "source_runtime_provider": "Do ambiente de execução {{provider}}",
+    "source_runtime_unknown": "De um ambiente de execução",
+    "source_clawhub": "Do ClawHub",
+    "source_skills_sh": "Do Habilidades.sh",
+    "source_github": "Do GitHub"
+  },
+  "actions": {
+    "row_menu": "Ações",
+    "add_to_agent": "Adicionar ao agente",
+    "refresh": "Atualização da fonte",
+    "my_agents": "Meus agentes",
+    "other_agents": "Outros agentes",
+    "no_agents": "Nenhum agente disponível",
+    "search_placeholder": "Buscar agentes…",
+    "no_agents_match": "Nenhum agente corresponde à sua busca.",
+    "has_partial": "{{owned}}/{{total}} adicionados",
+    "added_toast": "Adicionado a {{name}}",
+    "add_failed_toast": "Falha ao adicionar habilidade",
+    "delete": "Excluir",
+    "selected": "{{count}} selecionados",
+    "clear_selection": "Limpar seleção",
+    "delete_no_permission": "A seleção inclui habilidades que somente o criador ou um admin pode excluir",
+    "delete_dialog_title_one": "Excluir {{count}} habilidade?",
+    "delete_dialog_title_other": "Excluir {{count}} habilidades?",
+    "delete_dialog_desc_one": "Isso excluirá permanentemente o habilidade selecionado e o removerá de todos os agentes.",
+    "delete_dialog_desc_other": "Isso excluirá permanentemente os {{count}} habilidades selecionados e os removerá de todos os agentes.",
+    "deleted_toast_one": "{{count}} habilidade excluído",
+    "deleted_toast_other": "{{count}} habilidades excluídos",
+    "delete_failed_toast": "Falha ao excluir habilidades",
+    "update": "Atualizar",
+    "update_none": "A seleção não tem habilidades importadas que você possa atualizar.",
+    "update_dialog_title": "Atualizar as habilidades da fonte?",
+    "update_summary_selected_one": "{{count}} A habilidade será atualizada a partir de sua fonte.",
+    "update_summary_selected_other": "{{count}} As habilidades serão atualizadas de suas fontes.",
+    "update_summary_skipped_one": "{{count}} Não pode ser atualizado a partir de uma fonte - pulou",
+    "update_summary_skipped_other": "{{count}} Não pode ser atualizado a partir de uma fonte - pulou",
+    "update_confirm": "Atualizar {{count}}",
+    "update_updating": "Atualizando {{done}}/{{total}}…",
+    "updated_toast_one": "Actualizado. {{count}} habilidade de origem.",
+    "updated_toast_other": "Actualizado. {{count}} habilidades de origem.",
+    "update_partial_toast": "Actualizado. {{count}}, {{failed}} Falhou.",
+    "cancel": "Cancelar",
+    "add_confirm": "Adicionar ({{num}})",
+    "adding": "Adicionando...",
+    "added_multi_toast_one": "Adicionado a {{count}} agente",
+    "added_multi_toast_other": "Adicionado a {{count}} agentes"
+  },
+  "toolbar": {
+    "result_count_title": "Habilidades correspondentes / todos os habilidades",
+    "filter_label": "Filtrar",
+    "filter_active_count_one": "{{count}} filtro",
+    "filter_active_count_other": "{{count}} filtros",
+    "clear_filters": "Limpar filtros",
+    "section_usage": "Uso",
+    "section_labels": "Etiquetas",
+    "filter_search_placeholder": "Filtrar...",
+    "no_labels": "Nenhuma etiqueta ainda",
+    "no_results": "Nenhum resultado",
+    "display": "Exibição",
+    "sort_by": "Ordenar por",
+    "direction_asc": "Crescente",
+    "direction_desc": "Decrescente",
+    "section_columns": "Colunas",
+    "manage_labels": "Gerenciar etiquetas...",
+    "manage_labels_title": "Rótulos de habilidade."
+  },
+  "detail": {
+    "all_skills": "Todos os habilidades",
+    "read_only": "Somente leitura",
+    "delete_aria": "Excluir habilidade",
+    "delete_tooltip": "Excluir habilidade",
+    "supporting_data_warning": "Alguns dados do espaço de trabalho não puderam ser carregados. A atribuição de criador, nomes de ambiente de execução ou permissões de edição podem aparecer incompletos até a próxima atualização.",
+    "delete_file": "Excluir arquivo",
+    "name_placeholder": "habilidade-name",
+    "description_placeholder": "Uma frase descrevendo quando um agente deve usar este habilidade…",
+    "subline": {
+      "origin_runtime_named": "Ambiente de execução local · {{name}}",
+      "origin_runtime_provider": "Ambiente de execução local · {{provider}}",
+      "origin_runtime_unknown": "Ambiente de execução local",
+      "origin_clawhub": "Importado · ClawHub",
+      "origin_skills_sh": "Importado · Habilidades.sh",
+      "origin_github": "Importado · GitHub",
+      "origin_workspace": "Criado manualmente"
+    },
+    "conflict_banner": {
+      "title": "Outra pessoa atualizou este habilidade",
+      "body": "Suas edições foram preservadas. Descarte para trazer as alterações dela, ou Salve para sobrescrever."
+    },
+    "save_bar": {
+      "changed_summary": "Alterado: {{parts}}",
+      "changed_files_one": "{{count}} arquivo",
+      "changed_files_other": "{{count}} arquivos",
+      "discard": "Descartar",
+      "save": "Salvar alterações",
+      "saving": "Salvando…"
+    },
+    "not_found": {
+      "title": "Habilidade não encontrado",
+      "fallback": "Este habilidade pode ter sido excluído ou você perdeu o acesso a ele.",
+      "back": "Voltar para Habilidades"
+    },
+    "toast_saved": "Habilidade salvo",
+    "toast_save_failed": "Falha ao salvar habilidade",
+    "toast_deleted": "Habilidade excluído",
+    "toast_delete_failed": "Falha ao excluir habilidade",
+    "refresh": {
+      "button": "Atualizar",
+      "tooltip": "Re-download esta habilidade de sua fonte",
+      "source_github": "GitHub",
+      "source_skills_sh": "Habilidades.",
+      "source_clawhub": "GarraHub",
+      "toast_success": "Habilidade atualizada de {{source}}",
+      "toast_failed": "Falhou em atualizar a habilidade.",
+      "dialog": {
+        "title": "Atualização da fonte?",
+        "description": "Isso vai re-download\"{{name}}\"de {{source}} e substitua seu nome, descrição, HABILIDADE.MD, e arquivos pela versão mais recente.",
+        "warning": "Edições locais para esta habilidade serão sobrescritas. Tarefas de agentes, rótulos e criadores são preservados.",
+        "cancel": "Cancelar",
+        "confirm": "Atualizar",
+        "refreshing": "Atualizando..."
+      }
+    },
+    "delete_dialog": {
+      "title": "Excluir habilidade?",
+      "description_with_agents_one": "Isso excluirá permanentemente \"{{name}}\" e o removerá de {{count}} agente que o utiliza atualmente.",
+      "description_with_agents_other": "Isso excluirá permanentemente \"{{name}}\" e o removerá de {{count}} agentes que o utilizam atualmente.",
+      "description_no_agents": "Isso excluirá permanentemente \"{{name}}\" e o removerá de todos os agentes.",
+      "warning": "Esta ação não pode ser desfeita.",
+      "cancel": "Cancelar",
+      "confirm": "Excluir permanentemente",
+      "deleting": "Excluindo…"
+    },
+    "add_file": {
+      "placeholder": "templates/review.md",
+      "add": "Adicionar",
+      "cancel": "Cancelar",
+      "errors": {
+        "empty": "O caminho não pode estar vazio.",
+        "absolute": "Caminhos absolutos não são permitidos.",
+        "double_dot": "Caminhos não podem conter \"..\".",
+        "reserved": "HABILIDADE.md é reservado para o arquivo principal.",
+        "exists": "Já existe um arquivo neste caminho.",
+        "is_directory": "Já existe uma pasta com este nome",
+        "under_file": "Já existe um arquivo nesse local"
+      }
+    },
+    "header": {
+      "files_one": "{{count}} arquivo",
+      "files_other": "{{count}} arquivos",
+      "used_by_one": "{{count}} agente",
+      "used_by_other": "{{count}} agentes",
+      "updated": "Atualizado {{when}}",
+      "updated_by": "Atualizado {{when}} por {{name}}"
+    },
+    "tabs": {
+      "aria": "Seções do habilidade",
+      "overview": "Visão geral",
+      "files_one": "Arquivos {{count}}",
+      "files_other": "Arquivos {{count}}"
+    },
+    "overview": {
+      "properties": "Propriedades",
+      "properties_hint": "Esses campos permanecem sincronizados com o frontmatter do HABILIDADE.md.",
+      "name": "Nome",
+      "description": "Descrição",
+      "description_hint": "Agentes usam isso para decidir quando carregar a habilidade.",
+      "labels": "Etiquetas",
+      "used_by_one": "Usado por {{count}} agente",
+      "used_by_other": "Usado por {{count}} agentes",
+      "used_by_empty": "Ainda não atribuído a nenhum agente. Abra a aba Habilidades de um agente para atribuir.",
+      "permissions_owner": "Você pode editar e excluir este habilidade. As alterações entram em vigor na próxima execução do agente.",
+      "permissions_locked_creator": "Somente o criador ({{name}}) ou um admin do espaço de trabalho pode editar este habilidade.",
+      "permissions_locked": "Somente o criador ou um admin do espaço de trabalho pode editar este habilidade.",
+      "properties_help": "Sobre propriedades de habilidade.",
+      "character_count": "{{count}} personagens"
+    },
+    "files": {
+      "list_aria": "Arquivos do habilidade",
+      "main": "Arquivo principal",
+      "supporting_one": "Auxiliares {{count}}",
+      "supporting_other": "Auxiliares {{count}}",
+      "supporting_empty": "Nenhum arquivo auxiliar.",
+      "add_file": "Novo arquivo",
+      "mode_aria": "Visualização do arquivo",
+      "mode_preview": "Prévia",
+      "mode_edit": "Editar",
+      "mode_raw": "Texto simples"
+    }
+  },
+  "create": {
+    "back": "Voltar",
+    "back_aria": "Voltar para o seletor de método",
+    "close": "Fechar",
+    "close_aria": "Fechar",
+    "method": {
+      "chooser": {
+        "title": "Novo habilidade",
+        "desc": "Escolha como você quer adicionar um habilidade a este espaço de trabalho."
+      },
+      "manual": {
+        "title": "Criar manualmente",
+        "desc": "Escreva um novo HABILIDADE.md do zero."
+      },
+      "local": {
+        "title": "Importação local",
+        "desc": "Escolha uma pasta com HABILIDADE.MD, ou um arquivo .habilidade / .zip."
+      },
+      "url": {
+        "title": "Importar por URL",
+        "desc": "Busque um habilidade publicado por URL. Os arquivos são obtidos no servidor."
+      },
+      "runtime": {
+        "title": "Copiar do ambiente de execução",
+        "desc": "Escaneie um ambiente de execução local e promova um de seus habilidades em disco para este espaço de trabalho."
+      }
+    },
+    "manual": {
+      "name_label": "Nome",
+      "name_placeholder": "ex.: review-helper",
+      "name_hint": "Deve ser único dentro do espaço de trabalho.",
+      "description_label": "Descrição",
+      "description_placeholder": "Uma frase sobre quando atribuir este habilidade a um agente.",
+      "name_conflict_hint": " Tente um nome diferente e envie novamente.",
+      "fallback_error": "Falha ao criar habilidade",
+      "cancel": "Cancelar",
+      "submit": "Criar habilidade",
+      "submitting": "Criando…",
+      "toast_created": "Habilidade criado"
+    },
+    "local": {
+      "choose_folder": "Escolha a pasta",
+      "choose_archive": "Escolha .habilidade /.zip",
+      "folder_label": "Pasta",
+      "archive_label": "Arquivar",
+      "files_one": "{{count}} arquivo",
+      "files_other": "{{count}} arquivos",
+      "missing_skill_md": "Esta pasta não é uma habilidade. Não tem HABILIDADE.MD.",
+      "too_large": "Essa habilidade é muito grande para importar.",
+      "empty": "A pasta está vazia.",
+      "too_many_files": "Essa habilidade tem muitos arquivos para importar.",
+      "name_conflict_hint": " O nome do habilidade importado já existe — exclua o existente antes de tentar novamente.",
+      "fallback_error": "Falha na importação",
+      "cancel": "Cancelar",
+      "import": "Importar",
+      "importing": "Importando…",
+      "toast_imported": "Habilidade importado"
+    },
+    "url": {
+      "url_label": "URL do habilidade",
+      "supported_sources": "Fontes suportadas",
+      "import": "Importar",
+      "importing": "Importando…",
+      "importing_clawhub": "Importando do ClawHub…",
+      "importing_skills_sh": "Importando do Habilidades.sh…",
+      "importing_github": "Importando do GitHub…",
+      "name_conflict_hint": " O nome do habilidade importado já existe — exclua o existente antes de tentar novamente.",
+      "fallback_error": "Falha na importação",
+      "cancel": "Cancelar",
+      "toast_imported": "Habilidade importado"
+    }
+  },
+  "runtime_import": {
+    "runtime_label": "Ambiente de execução",
+    "runtime_placeholder": "Selecione um ambiente de execução local",
+    "no_local_runtimes_title": "Nenhum ambiente de execução local disponível",
+    "no_local_runtimes_hint": "Conecte um ambiente de execução local para navegar e importar seus habilidades locais.",
+    "choose_runtime": "Escolha um ambiente de execução para continuar",
+    "must_be_online": "O ambiente de execução precisa estar online para navegar pelos habilidades locais.",
+    "load_failed": "Falha ao carregar os habilidades locais do ambiente de execução",
+    "not_supported": "Este provedor de ambiente de execução ainda não expõe o inventário de habilidades locais.",
+    "no_skills_title": "Nenhum habilidade local encontrado",
+    "search_placeholder": "Buscar habilidades locais",
+    "no_search_results_hint": "Nenhum habilidade local corresponde a \"{{query}}\".",
+    "ignored_files_hint": "Symlinks, arquivos ilegíveis, arquivos muito grandes e pacotes muito grandes são ignorados durante a importação.",
+    "ready": "Pronto para importar",
+    "into_workspace": "para este espaço de trabalho.",
+    "select_skill": "Selecione um habilidade para continuar.",
+    "import_button": "Importar para o Espaço de trabalho",
+    "importing": "Importando…",
+    "skill_files_one": "{{count}} arquivo",
+    "skill_files_other": "{{count}} arquivos",
+    "skill_name_label": "Nome do habilidade no espaço de trabalho",
+    "skill_description_label": "Descrição",
+    "skill_description_placeholder": "Opcional — descreva quando um agente deve usar este habilidade.",
+    "toast_imported": "Habilidade importado",
+    "toast_import_failed": "Falha ao importar habilidade",
+    "select_all": "Selecionar tudo ({{count}})",
+    "bulk_ready": "{{count}} habilidades selecionados",
+    "bulk_import_button": "Importar {{count}} Habilidades",
+    "bulk_progress": "Importando {{completed}} / {{total}}…",
+    "bulk_cancel_button": "Cancelar",
+    "bulk_complete_hint": "Importação concluída.",
+    "bulk_cancelled_hint": "Importação cancelada.",
+    "bulk_done_button": "Concluído",
+    "bulk_summary_created": "Criado",
+    "bulk_summary_updated": "Atualizado",
+    "bulk_summary_conflicts": "Conflitos",
+    "bulk_summary_skipped": "Ignorados",
+    "bulk_summary_failed": "Falhou",
+    "conflict_single_title": "Já existe um habilidade com este nome",
+    "conflict_bulk_title": "{{count}} habilidades precisam de uma decisão",
+    "conflict_hint": "Escolha se deseja sobrescrever o habilidade existente no espaço de trabalho, importar com um novo nome ou ignorá-lo.",
+    "conflict_locked_creator": "Este habilidade foi criado por {{creator}}. Somente o criador pode sobrescrevê-lo por importação local; edite-o na página de detalhes do habilidade se precisar alterá-lo.",
+    "conflict_locked": "Somente o criador pode sobrescrever este habilidade por importação local; edite-o na página de detalhes do habilidade se precisar alterá-lo.",
+    "conflict_overwrite": "Sobrescrever",
+    "conflict_rename": "Renomear",
+    "conflict_skip": "Ignorar",
+    "conflict_cancel": "Cancelar",
+    "conflict_overwrite_all": "Sobrescrever tudo",
+    "conflict_skip_all": "Ignorar tudo",
+    "conflict_rename_label": "Novo nome do habilidade",
+    "conflict_footer": "{{count}} decisões de conflito pendentes.",
+    "conflict_apply_button": "Aplicar decisões",
+    "conflict_missing_resolution": "Escolha como resolver este conflito.",
+    "conflict_name_still_exists": "Esse nome já existe. Escolha outro nome ou ignore."
+  },
+  "file_tree": {
+    "no_files": "Nenhum arquivo",
+    "actions": {
+      "label": "Ações para {{path}}",
+      "edit": "Editar",
+      "rename": "Renomear",
+      "delete": "Excluir"
+    }
+  },
+  "file_viewer": {
+    "no_content": "*Ainda sem conteúdo*",
+    "markdown_placeholder": "Escreva o conteúdo em markdown...",
+    "raw_placeholder": "Conteúdo do arquivo...",
+    "raw_aria": "Conteúdo em texto simples de {{path}}"
+  }
+}

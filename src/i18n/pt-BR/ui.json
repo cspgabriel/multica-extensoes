@@ -1,0 +1,11 @@
+{
+  "attach_file": "Anexar arquivo",
+  "toggle_sidebar": "Alternar barra lateral",
+  "copy_code": "Copiar código",
+  "plain_text": "texto simples",
+  "error_boundary": {
+    "title": "Algo deu errado exibindo esta seção.",
+    "description": "Um erro inesperado ocorreu.",
+    "try_again": "Tentar novamente"
+  }
+}

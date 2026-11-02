@@ -1,0 +1,148 @@
+{
+  "page": {
+    "title": "Equipes",
+    "new_button": "Novo equipe",
+    "empty_no_squads": "Sem esquadrões ainda.",
+    "empty_no_match": "Nenhum equipe corresponde aos seus filtros.",
+    "table": {
+      "name": "Equipe",
+      "leader": "Líder",
+      "members": "Membros",
+      "creator": "Criado por",
+      "created": "Criado"
+    },
+    "no_matches": "Nenhum equipe corresponde",
+    "row_menu": "Ações do equipe",
+    "archive_action": "Arquivar"
+  },
+  "inspector": {
+    "details_section": "Detalhes",
+    "archive_button": "Arquivar"
+  },
+  "member_type": {
+    "agent": "Agente",
+    "member": "Membro"
+  },
+  "archive_dialog": {
+    "title": "Arquivar este equipe?",
+    "description": "\"{{name}}\" será arquivado. As tarefas atualmente atribuídas a este equipe serão transferidas para o líder dele. Isso não pode ser desfeito — crie um novo equipe se precisar do roteamento de volta.",
+    "cancel": "Cancelar",
+    "confirm": "Arquivar",
+    "archiving": "Arquivando…",
+    "success": "Equipe arquivado"
+  },
+  "name_editor": {
+    "title": "Mudar o nome do esquadrão.",
+    "placeholder": "Nome do esquadrão.",
+    "required": "O nome é obrigatório",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "saved": "Salvo",
+    "save_failed": "Falhou em salvar"
+  },
+  "add_member_dialog": {
+    "title": "Adicionar membro",
+    "description": "Escolha membros do espaço de trabalho ou agentes.",
+    "label_member": "Membro",
+    "label_role": "Função",
+    "label_optional": "(opcional)",
+    "cancel": "Cancelar",
+    "select_target": "Selecione um membro ou agente.",
+    "search_placeholder": "Procurem membros ou agentes...",
+    "members_section": "Membros",
+    "agents_section": "Agentes",
+    "role_placeholder": "Por exemplo. Revisor, Líder Frontend.",
+    "add": "Adicionar"
+  },
+  "role_editor": {
+    "empty": "Adicionar função…",
+    "placeholder": "Papel (por exemplo. Revisor)"
+  },
+  "description_dialog": {
+    "title": "Editar descrição",
+    "placeholder_empty": "Adicionar uma descrição",
+    "cancel": "Cancelar",
+    "responsibility_placeholder": "Por que esse esquadrão é responsável?",
+    "save": "Salvar"
+  },
+  "discard_changes_dialog": {
+    "title": "Descartar alterações não salvas?",
+    "description": "Você tem alterações não salvas nesta aba. Trocar de aba vai descartá-las.",
+    "keep_editing": "Continuar editando",
+    "discard_button": "Descartar"
+  },
+  "members_tab": {
+    "section_title": "Membros",
+    "section_count_one": "{{count}} membro neste equipe",
+    "section_count_other": "{{count}} membros neste equipe",
+    "add_member_button": "Adicionar membro",
+    "create_agent_button": "Criar agente",
+    "leader_chip": "Líder",
+    "view_agent_tooltip": "Abrir detalhes do agente",
+    "make_leader_tooltip": "Tornar líder do equipe",
+    "remove_member_tooltip": "Remover do equipe",
+    "status_working": "Trabalhando",
+    "status_idle": "Ocioso",
+    "status_offline": "Desconectado",
+    "status_unstable": "Instável",
+    "status_archived": "Arquivado",
+    "issue_status_blocked": "bloqueada",
+    "active_issue_more": "e mais {{count}}",
+    "last_active_label": "ativo pela última vez {{time}}"
+  },
+  "detail_tabs": {
+    "members": "Membros",
+    "instructions": "Instruções"
+  },
+  "details": {
+    "leader": "Líder",
+    "members": "Membros",
+    "created_by": "Criado por",
+    "created": "Criado",
+    "updated": "Atualizado"
+  },
+  "toasts": {
+    "member_added": "Membro adicionado",
+    "member_add_failed": "Não foi possível adicionar o membro.",
+    "member_removed": "Membro removido",
+    "member_remove_failed": "Falha ao remover o membro",
+    "role_updated": "Função atualizada",
+    "role_update_failed": "Não foi possível atualizar o papel.",
+    "leader_updated": "Líder atualizado.",
+    "leader_update_failed": "Não consegui atualizar o líder.",
+    "archive_failed": "Não foi possível arquivar o esquadrão.",
+    "instructions_saved": "Instruções salvas."
+  },
+  "profile_card": {
+    "unavailable": "Equipe indisponível",
+    "detail_link": "Detalhes →",
+    "archived": "Arquivado",
+    "member_count_one": "{{count}} membro",
+    "member_count_other": "{{count}} membros",
+    "members_section": "Membros",
+    "more_members_one": "+{{count}} a mais",
+    "more_members_other": "+{{count}} a mais"
+  },
+  "instructions_tab": {
+    "description": "O líder lê estas instruções sempre que trabalha em um assunto atribuído a este esquadrão.",
+    "unsaved_changes": "Alterações não salvas",
+    "save_button": "Salvar",
+    "placeholder": "Por exemplo. Sempre comece escrevendo um teste de falha. Prefere pequenos, compromissos atômicos."
+  },
+  "scope": {
+    "mine": "Meus",
+    "all": "Todos"
+  },
+  "toolbar": {
+    "display": "Exibição",
+    "sort_by": "Ordenar por",
+    "direction_asc": "Crescente",
+    "direction_desc": "Decrescente",
+    "section_columns": "Colunas",
+    "result_count_title": "Equipes correspondentes / todos os equipes",
+    "filter_label": "Filtrar",
+    "filter_active_count_one": "{{count}} filtro",
+    "filter_active_count_other": "{{count}} filtros",
+    "clear_filters": "Limpar filtros"
+  }
+}

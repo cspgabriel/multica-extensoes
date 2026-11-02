@@ -1,0 +1,72 @@
+{
+  "nav": {
+    "inbox": "Caixa de entrada",
+    "chat": "Conversas",
+    "my_issues": "Minhas tarefas",
+    "issues": "Tarefas",
+    "projects": "Projetos",
+    "autopilots": "Automações",
+    "agents": "Agentes",
+    "squads": "Equipes",
+    "usage": "Análises de uso",
+    "runtimes": "Ambientes de execução",
+    "skills": "Habilidades",
+    "settings": "Configurações"
+  },
+  "tab": {
+    "issue": "Tarefa",
+    "project": "Projeto",
+    "autopilot": "Automação",
+    "agent": "Agente",
+    "member": "Membro",
+    "squad": "Equipe",
+    "skill": "Habilidade",
+    "machine": "Máquina",
+    "runtime": "Ambiente de execução",
+    "attachment": "Anexo",
+    "create_agent": "Criar Agente",
+    "unknown": "Página desconhecida"
+  },
+  "help": {
+    "trigger": "Ajuda",
+    "download_desktop": "Aplicativo de desktop",
+    "docs": "Documentação",
+    "changelog": "Changelog",
+    "discord": "Discord",
+    "feedback": "Enviar opinião",
+    "server_version": "Versão do servidor {{version}}"
+  },
+  "workspace_loader": {
+    "loading_workspace": "Carregando espaço de trabalho…",
+    "loading_named_prefix": "Carregando"
+  },
+  "window": {
+    "go_back": "Voltar",
+    "go_forward": "Vá em frente.",
+    "hold_for_history": "Espere pela história.",
+    "back_history": "História do passado",
+    "forward_history": "Adiante história."
+  },
+  "sidebar": {
+    "unpin_tooltip": "Desafixar",
+    "workspaces_label": "Espaços de trabalho",
+    "create_workspace": "Criar espaço de trabalho",
+    "pending_invitations_label": "Convites pendentes",
+    "invitation_workspace_fallback": "Espaço de trabalho",
+    "invitation_join": "Entrar",
+    "invitation_decline": "Recusar",
+    "log_out": "Sair da conta",
+    "new_issue": "Nova tarefa",
+    "new_issue_shortcut": "C",
+    "pinned_label": "Fixados",
+    "work_group": "Trabalho",
+    "ai_team_group": "Equipe de IA",
+    "show_more_pins": "Mostre. {{count}} Mais...",
+    "show_fewer_pins": "Mostre menos.",
+    "unread_overflow": "99+",
+    "discord_card": {
+      "title": "Participe do nosso Discord",
+      "dismiss": "Dispensar"
+    }
+  }
+}
