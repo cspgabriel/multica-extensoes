@@ -10,6 +10,8 @@
   let editing = false;
   let dirty = false;
   let catalogueSequence = 0;
+  let cataloguePhase = 'idle';
+  let catalogue = createCatalogueClient(input => call('composio:catalogue', input));
   let market = { search: '', category: '', setup: 'direct', items: [], nextCursor: null, total: 0, connections: [], connectionsCursor: null };
 
   function el(tag, props = {}, children = []) {
@@ -66,6 +68,7 @@
       body.append(field('Chave de API', key, 'Uma nova chave é protegida pelo Windows. O painel nunca exibe a chave salva.'), field('ID de usuário Composio', userId, 'As conexões são filtradas por esta identidade. Para usar conexões existentes, informe o mesmo ID utilizado no seu projeto.'));
       const save = button('Salvar configuração', () => withBusy(save, async () => {
         await call('composio:configure', { ...context, userId: userId.value.trim(), apiKey: key.value.trim() });
+        catalogue = createCatalogueClient(input => call('composio:catalogue', input));
         key.value = '';
         modal.close();
         notify('Configuração salva.');
@@ -131,12 +134,13 @@
     if (!grid) return;
     grid.replaceChildren(...market.items.map(card));
     if (!market.items.length) grid.append(el('div', { class: 'empty', text: 'Nenhuma integração encontrada com estes filtros. Altere a configuração, o nome ou a categoria.' }));
-    document.getElementById('catalogue-count').textContent = `${market.total.toLocaleString('pt-BR')} integrações`;
+    document.getElementById('catalogue-count').textContent = `${market.total.toLocaleString('pt-BR')}${market.totalIsEstimate ? '+' : ''} integrações${market.totalIsEstimate ? ' encontradas' : ''}`;
     document.getElementById('visible-count').textContent = `${market.items.length} integrações exibidas`;
     document.getElementById('more-apps').hidden = !market.nextCursor;
   }
   async function loadCatalogue(more = false) {
     const sequence = ++catalogueSequence;
+    cataloguePhase = 'loading';
     const grid = document.getElementById('app-grid');
     if (!grid) return;
     if (!more) {
@@ -145,17 +149,19 @@
     }
     const load = document.getElementById('more-apps');
     load.disabled = true;
+    document.getElementById('catalogue-live').textContent = 'Consultando catálogo…';
     try {
-      const data = await call('composio:catalogue', { search: market.search, category: market.category, setup: market.setup, ...(more ? { cursor: market.nextCursor } : {}) });
+      const data = await catalogue({ search: market.search, category: market.category, setup: market.setup, ...(more ? { cursor: market.nextCursor } : {}) });
       if (sequence !== catalogueSequence) return;
-      if (data.setup !== market.setup) throw new Error('Reabra o Multica Desktop para carregar os novos filtros do marketplace.');
-      market = { ...market, items: more ? [...market.items, ...data.items.filter(x => !market.items.some(old => old.slug === x.slug))] : data.items, nextCursor: data.nextCursor, total: data.total };
+      market = { ...market, items: more ? [...market.items, ...data.items.filter(x => !market.items.some(old => old.slug === x.slug))] : data.items, nextCursor: data.nextCursor, total: data.total, totalIsEstimate: Boolean(data.totalIsEstimate) };
+      cataloguePhase = 'ready';
       renderCards();
       document.getElementById('catalogue-live').textContent = 'Catálogo Composio atualizado';
     } catch (error) {
       if (sequence !== catalogueSequence) return;
+      cataloguePhase = 'error';
       grid.replaceChildren(el('div', { class: 'error' }, [el('p', { text: error.message }), button('Tentar novamente', () => loadCatalogue()), button('Configurar', settings)]));
-      document.getElementById('catalogue-live').textContent = 'Conexão indisponível';
+      document.getElementById('catalogue-live').textContent = 'Não foi possível carregar o catálogo';
     } finally { if (sequence === catalogueSequence) { load.disabled = false; content.setAttribute('aria-busy', 'false'); } }
   }
   async function loadConnections(more = false) {
@@ -168,7 +174,7 @@
       if (!market.connections.length) target.append(el('p', { class: 'help', text: 'Nenhuma conexão para a identidade configurada. Conecte um app ou ajuste o ID de usuário em Configurar Composio.' }));
       if (data.nextCursor) target.append(button('Carregar mais conexões', () => loadConnections(true)));
       document.getElementById('connections-title').textContent = `Minhas conexões · ${market.connections.length}${data.nextCursor ? '+' : ''}`;
-      renderCards();
+      if (cataloguePhase === 'ready') renderCards();
     } catch (error) { target.replaceChildren(el('p', { class: 'help', text: error.message })); }
   }
   async function loadAgentAccess(){

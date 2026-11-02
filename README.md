@@ -7,7 +7,7 @@ Instalador independente para adicionar **Docs**, **Editar com IA**, **Marketplac
 ## Instalar
 
 1. Instale o [Multica Desktop](https://multica.ai) normalmente.
-2. Baixe `multica-extensoes-1.2.0-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/latest).
+2. Baixe `multica-extensoes-1.2.1-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/latest).
 3. Extraia o ZIP e execute **Instalar.cmd**.
 4. Confirme a instalação. A interface será reaberta com os novos itens abaixo de Runtimes.
 
@@ -89,7 +89,7 @@ Os testes cobrem o formato ASAR, geração e validação do patch, instalação,
 
 O comando de empacotamento, executado no Windows, gera o ZIP, o bootstrap e `SHA256SUMS.txt` em `dist`.
 
-Os fontes instalados ficam em `versions/1.2.0`. Edite a interface em `src/ui`, o backend em `src/main` e o Pool em `pool`. Os documentos ficam em `data/docs`. Alterar o backend exige reiniciar a interface; menu e rotas exigem gerar um novo patch a partir do backup verificado. Leia [Manutenção com IA](docs/manutencao-ia.md).
+Os fontes instalados ficam em `versions/1.2.1`. Edite a interface em `src/ui`, o backend em `src/main` e o Pool em `pool`. Os documentos ficam em `data/docs`. Alterar o backend exige reiniciar a interface; menu e rotas exigem gerar um novo patch a partir do backup verificado. Leia [Manutenção com IA](docs/manutencao-ia.md).
 
 ## Privacidade e distribuição
 
