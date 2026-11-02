@@ -95,7 +95,8 @@ function createService(options = {}) {
   }
   const runCli = options.runCli || ((args, cwd, stdin) => new Promise((resolve, reject) => {
     const executable = path.join(process.resourcesPath, 'app.asar.unpacked', 'resources', 'bin', 'multica.exe');
-    const child=execFile(executable, ['--profile', options.profile || 'desktop-api.multica.ai', ...args], { cwd, windowsHide: true, timeout: 45000, maxBuffer: 16 * 1024 * 1024 }, (error, stdout) => {
+    // Agent inventories include attached instructions; real workspaces exceed 16 MiB.
+    const child=execFile(executable, ['--profile', options.profile || 'desktop-api.multica.ai', ...args], { cwd, windowsHide: true, timeout: 45000, maxBuffer: 64 * 1024 * 1024 }, (error, stdout) => {
       if (error) return reject(new Error('O Multica não concluiu a operação. Confira a conexão, as permissões e se o agente está disponível.'));
       try { resolve(JSON.parse(stdout)); } catch { reject(new Error('A resposta do CLI do Multica não era JSON válido.')); }
     });

@@ -3,7 +3,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const {execFile}=require('node:child_process');
 const {createAgentAccess}=require('./agent-access.cjs');
-function execute(file,args,options={},stdin){return new Promise((resolve,reject)=>{const child=execFile(file,args,{windowsHide:true,encoding:'utf8',timeout:120000,maxBuffer:16*1024*1024,...options},(error,stdout)=>error?reject(new Error('O CLI ou a proteção de credenciais recusou a sincronização.')):resolve(stdout));if(stdin!==undefined)child.stdin.end(stdin);});}
+function execute(file,args,options={},stdin){return new Promise((resolve,reject)=>{const child=execFile(file,args,{windowsHide:true,encoding:'utf8',timeout:120000,maxBuffer:64*1024*1024,...options},(error,stdout)=>error?reject(new Error('O CLI ou a proteção de credenciais recusou a sincronização.')):resolve(stdout));if(stdin!==undefined)child.stdin.end(stdin);});}
 (async()=>{
   if(process.env.MULTICA_TASK_ID||process.env.MULTICA_TASK_CONFIG_ROOT)throw new Error('O sincronizador deve executar na sessão do proprietário, fora de tarefas de agentes.');
   const configPath=process.argv[2];
