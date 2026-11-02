@@ -57,7 +57,11 @@ function createService(options = {}) {
     return data;
   }
   function toolkit(item) {
-    return { slug: clean(item.slug, 100), name: clean(item.name, 120), description: clean(item.meta?.description, 1400), logo: /^https:\/\/(?:logos|assets)\.composio\.dev\//.test(item.meta?.logo || '') ? item.meta.logo : '', categories: (item.meta?.categories || []).map(x => ({ id: clean(x.id || x.slug, 100), name: clean(x.name, 100) })), toolsCount: item.meta?.tools_count || 0, triggersCount: item.meta?.triggers_count || 0, authSchemes: item.auth_schemes || [], managedSchemes: item.composio_managed_auth_schemes || [], noAuth: item.no_auth || item.auth_schemes?.includes('NO_AUTH') || false };
+    const authSchemes = item.auth_schemes || [];
+    const managedSchemes = item.composio_managed_auth_schemes || [];
+    const noAuth = item.no_auth === true || authSchemes.some(scheme => /^no_auth$/i.test(scheme));
+    const setup = noAuth || managedSchemes.some(scheme => /oauth/i.test(scheme)) ? 'direct' : 'panel';
+    return { slug: clean(item.slug, 100), name: clean(item.name, 120), description: clean(item.meta?.description, 1400), logo: /^https:\/\/(?:logos|assets)\.composio\.dev\//.test(item.meta?.logo || '') ? item.meta.logo : '', categories: (item.meta?.categories || []).map(x => ({ id: clean(x.id || x.slug, 100), name: clean(x.name, 100) })), toolsCount: item.meta?.tools_count || 0, triggersCount: item.meta?.triggers_count || 0, authSchemes, managedSchemes, noAuth, setup };
   }
   function safeDocPath(id) {
     if (!DOC_ID.test(id || '')) throw new Error('Nome de documento inválido. Use letras minúsculas, números e hífens, terminando em .md.');
@@ -203,14 +207,37 @@ function createService(options = {}) {
       return handlers['composio:status']();
     },
     'composio:catalogue': async (input = {}) => {
-      const params = { limit: 48, sort_by: 'usage', search: clean(input.search, 150), category: clean(input.category, 100), cursor: clean(input.cursor, 2000), include_deprecated: false };
+      const setup = input.setup || 'direct';
+      if (!['direct', 'panel', 'all'].includes(setup)) throw new Error('Filtro de configuração inválido.');
+      const params = { limit: 1000, sort_by: 'usage', search: clean(input.search, 150), category: clean(input.category, 100), include_deprecated: false };
       const key = JSON.stringify(params);
-      if (!input.refresh && catalogueCache.get(key)?.expires > Date.now()) return catalogueCache.get(key).data;
-      const response = await api('toolkits', params);
-      const data = { items: (response.items || []).map(toolkit), nextCursor: response.next_cursor || null, total: response.total_items || 0, fetchedAt: new Date().toISOString() };
-      if (catalogueCache.size > 50) catalogueCache.clear();
-      catalogueCache.set(key, { data, expires: Date.now() + 5 * 60 * 1000 });
-      return data;
+      let snapshot = catalogueCache.get(key);
+      let offset = 0;
+      if (input.cursor) {
+        let cursor;
+        try { cursor = JSON.parse(Buffer.from(clean(input.cursor, 2000), 'base64url').toString('utf8')); } catch {}
+        if (!snapshot || snapshot.expires <= Date.now() || input.refresh || cursor?.id !== snapshot.id || cursor.setup !== setup || !Number.isSafeInteger(cursor.offset) || cursor.offset < 0) throw new Error('O catálogo ou filtro mudou. Atualize a busca para continuar.');
+        offset = cursor.offset;
+      }
+      if (!snapshot || snapshot.expires <= Date.now() || input.refresh) {
+        // The API has no auth-setup filter. Build the filtered pagination from
+        // every source page so a manual-only page cannot hide eligible apps.
+        const items = new Map(), seen = new Set();
+        let cursor;
+        do {
+          if (seen.size >= 20 || seen.has(cursor)) throw new Error('Não foi possível concluir o catálogo. Refine a busca e tente novamente.');
+          seen.add(cursor);
+          const response = await api('toolkits', { ...params, ...(cursor ? { cursor } : {}) });
+          for (const item of response.items || []) { const app = toolkit(item); if (app.slug) items.set(app.slug, app); }
+          cursor = response.next_cursor || null;
+        } while (cursor);
+        snapshot = { id: crypto.randomUUID(), items: [...items.values()], fetchedAt: new Date().toISOString(), expires: Date.now() + 5 * 60 * 1000 };
+        if (catalogueCache.size >= 10) catalogueCache.delete(catalogueCache.keys().next().value);
+        catalogueCache.set(key, snapshot);
+      }
+      const items = setup === 'all' ? snapshot.items : snapshot.items.filter(app => app.setup === setup);
+      const nextOffset = offset + 48;
+      return { items: items.slice(offset, nextOffset), nextCursor: nextOffset < items.length ? Buffer.from(JSON.stringify({ id: snapshot.id, setup, offset: nextOffset })).toString('base64url') : null, total: items.length, setup, fetchedAt: snapshot.fetchedAt };
     },
     'composio:categories': async () => {
       if (categoryCache?.expires > Date.now()) return categoryCache.items;

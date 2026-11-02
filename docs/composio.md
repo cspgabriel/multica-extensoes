@@ -2,6 +2,12 @@
 
 O marketplace consulta o catálogo do seu projeto Composio. Há busca, categorias, paginação, detalhes e ferramentas por integração.
 
+## Filtrar por configuração
+
+Em **Como conectar**, o padrão **Sem painel Composio** exibe integrações sem autenticação e com OAuth gerenciado pelo Composio. O login e o consentimento da sua conta ainda podem abrir no navegador. A chave do projeto continua sendo necessária para consultar o marketplace.
+
+Você também pode selecionar **Todas as integrações** ou **Exigem configuração no painel**. Apps que exigem configuração têm um aviso no card. O filtro funciona junto com busca e categorias, inclusive em páginas seguintes; a contagem corresponde ao filtro selecionado. Veja [Filtros do marketplace](filtros-marketplace.md).
+
 ## Configurar
 
 Clique em **Configurar Composio**. Informe sua chave de projeto e um **ID de usuário Composio**. Esse ID é a identidade das suas conexões no projeto, não necessariamente seu e-mail. Para encontrar contas existentes, use exatamente o mesmo ID usado ao conectá-las.

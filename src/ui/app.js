@@ -10,7 +10,7 @@
   let editing = false;
   let dirty = false;
   let catalogueSequence = 0;
-  let market = { search: '', category: '', items: [], nextCursor: null, total: 0, connections: [], connectionsCursor: null };
+  let market = { search: '', category: '', setup: 'direct', items: [], nextCursor: null, total: 0, connections: [], connectionsCursor: null };
 
   function el(tag, props = {}, children = []) {
     const node = document.createElement(tag);
@@ -118,11 +118,11 @@
   }
   function card(app) {
     const active = market.connections.filter(x => x.toolkit === app.slug && x.status === 'ACTIVE').length;
-    const action = button(app.noAuth ? 'Usar com IA' : active ? 'Conectar outra' : 'Conectar', () => app.noAuth ? aiDialog(app) : connect(app, action), 'button' + (!active && !app.noAuth ? ' primary' : ''));
+    const action = button(app.noAuth ? 'Usar com IA' : app.setup === 'panel' ? 'Configurar no painel' : active ? 'Conectar outra' : 'Conectar', () => app.noAuth ? aiDialog(app) : connect(app, action), 'button' + (!active && !app.noAuth ? ' primary' : ''));
     return el('article', { class: 'app-card', 'data-toolkit': app.slug }, [
       el('div', { class: 'card-head' }, [logo(app), el('div', {}, [el('h2', { text: app.name }), el('small', { text: app.slug })]), active ? el('span', { class: 'connected', text: `${active} conectada${active > 1 ? 's' : ''}` }) : null]),
       el('p', { text: app.description || 'Integração disponível no catálogo do Composio.' }),
-      el('div', { class: 'card-tags' }, app.categories.slice(0, 2).map(category => el('span', { class: 'tag', text: category.name }))),
+      el('div', { class: 'card-tags' }, [el('span', { class: 'tag setup-tag' + (app.setup === 'panel' ? ' panel-tag' : ''), text: app.noAuth ? 'Sem autenticação' : app.setup === 'panel' ? 'Configuração no painel' : 'Conexão pelo marketplace' }), ...app.categories.slice(0, 2).map(category => el('span', { class: 'tag', text: category.name }))]),
       el('div', { class: 'card-footer' }, [el('small', { text: `${app.toolsCount.toLocaleString('pt-BR')} ferramentas` }), el('div', { class: 'card-actions' }, [button('Explorar', () => detail(app)), action])]),
     ]);
   }
@@ -130,7 +130,7 @@
     const grid = document.getElementById('app-grid');
     if (!grid) return;
     grid.replaceChildren(...market.items.map(card));
-    if (!market.items.length) grid.append(el('div', { class: 'empty', text: 'Nenhuma integração encontrada. Tente outro nome ou categoria.' }));
+    if (!market.items.length) grid.append(el('div', { class: 'empty', text: 'Nenhuma integração encontrada com estes filtros. Altere a configuração, o nome ou a categoria.' }));
     document.getElementById('catalogue-count').textContent = `${market.total.toLocaleString('pt-BR')} integrações`;
     document.getElementById('visible-count').textContent = `${market.items.length} integrações exibidas`;
     document.getElementById('more-apps').hidden = !market.nextCursor;
@@ -139,12 +139,16 @@
     const sequence = ++catalogueSequence;
     const grid = document.getElementById('app-grid');
     if (!grid) return;
-    if (!more) grid.replaceChildren(...Array.from({ length: 6 }, () => el('div', { class: 'skeleton', 'aria-hidden': 'true' })));
+    if (!more) {
+      market = { ...market, items: [], nextCursor: null, total: 0 };
+      grid.replaceChildren(...Array.from({ length: 6 }, () => el('div', { class: 'skeleton', 'aria-hidden': 'true' })));
+    }
     const load = document.getElementById('more-apps');
     load.disabled = true;
     try {
-      const data = await call('composio:catalogue', { search: market.search, category: market.category, ...(more ? { cursor: market.nextCursor } : {}) });
+      const data = await call('composio:catalogue', { search: market.search, category: market.category, setup: market.setup, ...(more ? { cursor: market.nextCursor } : {}) });
       if (sequence !== catalogueSequence) return;
+      if (data.setup !== market.setup) throw new Error('Reabra o Multica Desktop para carregar os novos filtros do marketplace.');
       market = { ...market, items: more ? [...market.items, ...data.items.filter(x => !market.items.some(old => old.slug === x.slug))] : data.items, nextCursor: data.nextCursor, total: data.total };
       renderCards();
       document.getElementById('catalogue-live').textContent = 'Catálogo Composio atualizado';
@@ -206,24 +210,31 @@
       body.append(el('p', { class: 'detail-description', text: data.description }), el('p', { class: 'help', text: `${data.toolsCount} ferramentas · ${data.triggersCount} gatilhos · ${data.noAuth ? 'Sem autenticação' : data.authSchemes.join(', ')}` }));
       body.append(el('ul', { class: 'tool-list' }, data.tools.map(tool => el('li', {}, [el('b', { text: tool.name }), el('p', { text: tool.description }), el('code', { text: tool.slug })]))));
       if (data.moreTools) body.append(el('p', { class: 'help', text: 'Exibindo as primeiras 15 ferramentas. A IA pode descobrir outras conforme a tarefa.' }));
-      const connectButton = button('Conectar conta', () => connect(data, connectButton), 'button primary');
+      const connectButton = button(data.setup === 'panel' ? 'Configurar no painel' : 'Conectar conta', () => connect(data, connectButton), 'button primary');
       body.append(el('div', { class: 'modal-actions' }, [button('Pedir tarefa à IA', () => aiDialog(data)), !data.noAuth ? connectButton : null]));
     } catch (error) { loading.replaceWith(el('p', { class: 'error', text: error.message })); }
   }
   async function marketplace() {
     document.getElementById('breadcrumb').textContent = 'Marketplace / Composio';
     const search = el('input', { class: 'search', type: 'search', placeholder: 'Buscar apps, ferramentas ou serviços…', 'aria-label': 'Buscar integrações' });
+    const setup = el('select', { id: 'setup-filter', 'aria-label': 'Configuração das integrações' }, [
+      el('option', { value: 'direct', text: 'Sem painel Composio', selected: true }),
+      el('option', { value: 'all', text: 'Todas as integrações' }),
+      el('option', { value: 'panel', text: 'Exigem configuração no painel' }),
+    ]);
+    setup.addEventListener('change', () => { market.setup = setup.value; loadCatalogue(); });
+    const setupFilter = el('div', { class: 'setup-filters' }, [el('label', { for: 'setup-filter', text: 'Como conectar' }), setup, el('p', { class: 'help', text: 'Por padrão, apps sem autenticação ou com OAuth gerenciado. O login da conta pode abrir no navegador.' })]);
     let debounce;
     search.addEventListener('input', () => { clearTimeout(debounce); debounce = setTimeout(() => { market.search = search.value.trim(); loadCatalogue(); }, 280); });
     const chips = el('div', { class: 'chips', 'aria-label': 'Categorias' });
-    const all = button('Todos os apps', () => chooseCategory('', all), 'chip active');
+    const all = button('Todas as categorias', () => chooseCategory('', all), 'chip active');
     chips.append(all);
     function chooseCategory(id, node) { market.category = id; chips.querySelectorAll('.chip').forEach(x => x.classList.remove('active')); node.classList.add('active'); loadCatalogue(); }
     const more = button('Carregar mais integrações', () => loadCatalogue(true));
     more.id = 'more-apps'; more.hidden = true;
     const connectionsList = el('div', { class: 'connection-list', id: 'connection-list' });
     content.replaceChildren(
-      el('section', { class: 'hero' }, [el('div', { class: 'eyebrow', text: 'FERRAMENTAS PARA OS SEUS AGENTES' }), el('div', { class: 'hero-row' }, [el('div', {}, [el('h1', { text: 'Conecte seu próximo superpoder.' }), el('p', { text: 'Descubra integrações, conecte suas contas e leve mais ferramentas para o trabalho com IA.' })]), el('div', { class: 'catalogue-state' }, [el('span', { class: 'dot' }), el('span', { id: 'catalogue-live', text: 'Consultando catálogo…' })])]), el('div', { class: 'search-row' }, [el('div', { class: 'search-wrap' }, [el('span', { text: '⌕', 'aria-hidden': 'true' }), search]), button('Atualizar conexões', () => loadConnections())]), chips]),
+      el('section', { class: 'hero' }, [el('div', { class: 'eyebrow', text: 'FERRAMENTAS PARA OS SEUS AGENTES' }), el('div', { class: 'hero-row' }, [el('div', {}, [el('h1', { text: 'Conecte seu próximo superpoder.' }), el('p', { text: 'Descubra integrações, conecte suas contas e leve mais ferramentas para o trabalho com IA.' })]), el('div', { class: 'catalogue-state' }, [el('span', { class: 'dot' }), el('span', { id: 'catalogue-live', text: 'Consultando catálogo…' })])]), el('div', { class: 'search-row' }, [el('div', { class: 'search-wrap' }, [el('span', { text: '⌕', 'aria-hidden': 'true' }), search]), button('Atualizar conexões', () => loadConnections())]), setupFilter, chips]),
       el('section', { class: 'catalogue-body' }, [el('section',{class:'connections',id:'agent-access','aria-label':'Acesso dos agentes'},[el('p',{class:'help',text:'Verificando acesso dos agentes…'})]),el('details', { class: 'connections' }, [el('summary', { id: 'connections-title', text: 'Minhas conexões' }), connectionsList]), el('div', { class: 'catalogue-toolbar' }, [el('strong', { id: 'catalogue-count', text: 'Integrações' }), el('span', { id: 'visible-count', text: 'Carregando…' })]), el('div', { class: 'grid', id: 'app-grid' }), el('div', { class: 'load-more' }, [more]), el('div', { class: 'footer-note', text: 'Catálogo oficial Composio · A autorização das contas é concluída no seu navegador.' })]),
     );
     call('composio:categories').then(categories => categories.slice(0, 12).forEach(category => { const chip = button(category.name, () => chooseCategory(category.id, chip), 'chip'); chips.append(chip); })).catch(() => {});
