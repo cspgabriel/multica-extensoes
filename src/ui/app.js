@@ -330,6 +330,6 @@
   document.getElementById('nav-docs').addEventListener('click', () => navigate('docs'));
   document.getElementById('ai-open').addEventListener('click', () => aiDialog());
   document.getElementById('settings-open').addEventListener('click', settings);
-  const begin = page === 'docs' ? docs().then(() => { if (query.get('ai') === '1') return aiDialog(); }) : marketplace();
+  const begin = page === 'studio' ? window.mountStudio({el,button,call,notify,content,context,navigate}) : page === 'docs' ? docs().then(() => { if (query.get('ai') === '1') return aiDialog(); }) : marketplace();
   begin.catch(error => { content.replaceChildren(el('div', { class: 'error', text: error.message })); content.setAttribute('aria-busy', 'false'); });
 })();

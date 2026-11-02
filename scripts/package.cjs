@@ -5,7 +5,7 @@ const crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
 const version=require('../package.json').version;
-const destination=path.join(root,'dist');
+const destination=process.env.MEXT_PACKAGE_OUTPUT?path.resolve(process.env.MEXT_PACKAGE_OUTPUT):path.join(root,'dist');
 const stage=path.join(destination,'package-'+crypto.randomUUID());
 fs.mkdirSync(stage,{recursive:true});
 const include=['src','pool','lib','docs','scripts/Common.ps1','compatibility.json','package.json','README.md','LICENSE','NOTICE.md','Instalar.ps1','Desinstalar.ps1','Instalar.cmd','Desinstalar.cmd'];

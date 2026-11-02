@@ -1,13 +1,13 @@
 # Multica Extensões
 
-Instalador independente para adicionar **Docs**, **Editar com IA**, **Marketplace Composio** e **Pool de Contas IA** ao Multica Desktop no Windows.
+Instalador independente para adicionar **Estúdio de IA com dez recursos**, **Docs**, **Editar com IA**, **Marketplace Composio** e **Pool de Contas IA** ao Multica Desktop no Windows.
 
 **Primeira versão: Multica Desktop 0.7.2, Windows x64, build verificado.** Outras versões e pacotes modificados são recusados antes de alterar o aplicativo. Não distribui o Multica e não altera seu executável, assinatura ou fuses.
 
 ## Instalar
 
 1. Instale o [Multica Desktop](https://multica.ai) normalmente.
-2. Baixe `multica-extensoes-1.3.0-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/latest).
+2. Baixe `multica-extensoes-2.0.0-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/latest).
 3. Extraia o ZIP e execute **Instalar.cmd**.
 4. Confirme a instalação. A interface será reaberta com os novos itens abaixo de Runtimes.
 
@@ -35,6 +35,7 @@ Os caminhos são detectados no computador de quem instala. A pasta padrão dos m
 
 ## Recursos
 
+- **Estúdio de IA:** dez painéis abaixo de Ambientes de execução: ferramentas MCP, projetos e prévias, diff e revisão, restauração por arquivo, contexto e troca de agente, fluxos sequenciais, teste visual, uso e desempenho, comparação em worktrees e diagnóstico de extensões. [Manual e limites](docs/estudio-ia.md).
 - **Português do Brasil:** 25 catálogos e 6.942 entradas da interface, seletor de idioma, calendário e diálogos do desktop. O idioma é ativado localmente na primeira abertura após instalar. Veja [Tradução PT-BR](docs/traducao-pt-br.md).
 - **Docs:** leitura, editor Markdown, histórico e proteção contra gravações concorrentes.
 - **Editar com IA:** escolha um agente local e descreva uma alteração. O envio cria uma issue em todo no workspace atual e inicia trabalho real do agente selecionado.

@@ -88,13 +88,16 @@ function Stop-VerifiedDesktop([string]$DesktopExe, [string]$Profile) {
     if ($desktopProcessId -eq [int]$daemon.pid) { throw 'PID protegido: daemon. Operação recusada.' }
     $verified = Get-CimInstance Win32_Process -Filter "ProcessId=$desktopProcessId"
     if ($verified.ExecutablePath -ne $DesktopExe -or $verified.CommandLine -match '--type=') { throw 'O processo da interface mudou. Operação recusada.' }
-    Stop-Process -Id $desktopProcessId -Force
-    Wait-Process -Id $desktopProcessId -ErrorAction SilentlyContinue
+    $prefs = Join-Path $env:USERPROFILE '.multica\desktop_prefs.json'
+    if ((Test-Path -LiteralPath $prefs) -and (Get-Content -LiteralPath $prefs -Raw | ConvertFrom-Json).autoStop -eq $true) { throw 'Desative Encerrar daemon ao sair nas configurações do Desktop antes de instalar.' }
+    $interface = Get-Process -Id $desktopProcessId
+    if (-not $interface.CloseMainWindow()) { throw 'A interface não aceitou o fechamento normal. Feche-a e execute o instalador novamente.' }
+    if (-not $interface.WaitForExit(20000)) { throw 'A interface não concluiu o fechamento. A instalação foi interrompida sem forçar processos.' }
     return [int]$daemon.pid
 }
 
 function Open-MulticaDesktop([string]$DesktopExe, [string]$InstallRoot) {
-    Start-Process -FilePath $DesktopExe -WorkingDirectory $InstallRoot -PassThru -RedirectStandardOutput (Join-Path $InstallRoot 'desktop.stdout.log') -RedirectStandardError (Join-Path $InstallRoot 'desktop.stderr.log')
+    Start-Process -FilePath $DesktopExe -WindowStyle Hidden -WorkingDirectory $InstallRoot -PassThru -RedirectStandardOutput (Join-Path $InstallRoot 'desktop.stdout.log') -RedirectStandardError (Join-Path $InstallRoot 'desktop.stderr.log')
 }
 
 function Assert-DaemonPreserved([string]$DesktopExe, [string]$Profile, $BeforePid) {

@@ -5,6 +5,7 @@ const crypto = require('node:crypto');
 const { fileURLToPath } = require('node:url');
 const { execFile } = require('node:child_process');
 const { createAgentAccess } = require('./agent-access.cjs');
+const { createStudio } = require('./studio.cjs');
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const DOC_ID = /^[a-z0-9][a-z0-9-]{0,79}\.md$/;
@@ -294,13 +295,18 @@ function createService(options = {}) {
     },
     'composio:dashboard': () => openHttps('https://dashboard.composio.dev/'),
   };
-  return { handlers, root, docsRoot };
+  const studio=createStudio({...options,root,stateRoot,sourceRoot,runCli,electron,access,credentials});
+  Object.assign(handlers,studio.handlers);
+  return { handlers, root, docsRoot, studio };
 }
 
 function register(rendererEntry, options = {}) {
   const electron = options.electron || require('electron');
   const service = createService({ ...options, electron });
   const expected = path.resolve(rendererEntry).toLowerCase();
+  service.studio.start();
+  let quitting=false;
+  electron.app?.on('before-quit',event=>{if(quitting)return;event.preventDefault();service.studio.close().then(()=>{quitting=true;electron.app.quit();}).catch(error=>{console.error('[studio]',error.message);electron.dialog?.showErrorBox('Processos do Estúdio',error.message);});});
   for (const [channel, handler] of Object.entries(service.handlers)) {
     electron.ipcMain.handle('desktop-modules:' + channel, async (event, input = {}) => {
       try {
