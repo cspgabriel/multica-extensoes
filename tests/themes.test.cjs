@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const C = require('../src/themes/catalogue.js');
-const {stylesheet,patchProvider} = require('../lib/themes.cjs');
+const {stylesheet,patchProvider,patchNavigationIcons} = require('../lib/themes.cjs');
 function luminance(hex) {
   const [r,g,b] = hex.slice(1).match(/../g).map(v=>parseInt(v,16)/255).map(v=>v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4);
   return 0.2126*r+0.7152*g+0.0722*b;
@@ -87,4 +87,11 @@ test('native provider forces the palette mode only while a custom theme is selec
 test('checked-in CSS is generated from the shared tokens and isolates native, module and pool aliases',()=>{
   assert.equal(fs.readFileSync(path.join(__dirname,'../src/themes/themes.css'),'utf8'),stylesheet());
   assert.match(stylesheet(),/data-theme-surface="module"/);assert.match(stylesheet(),/data-theme-surface="pool"/);
+});
+test('the theme route resolves to a registered native icon instead of an undefined React element',()=>{
+  const palette=()=>null;
+  const context=vm.createContext({Palette:palette});
+  vm.runInContext(patchNavigationIcons('var ROUTE_ICON_COMPONENTS = {};\nfunction routeIconForPath() { return ROUTE_ICON_COMPONENTS.Palette; }'),context);
+  assert.equal(context.routeIconForPath(),palette);
+  assert.throws(()=>patchNavigationIcons('var OTHER_ICONS = {};'),/registro nativo/);
 });

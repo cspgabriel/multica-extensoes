@@ -16,6 +16,7 @@ function scoped(ws){return{
 \t\truntimes: () => \x60\x24{ws}/runtimes\x60,
 };}
 var WORKSPACE_PAGES = {};
+var ROUTE_ICON_COMPONENTS = {};
 function title(subject){const page = WORKSPACE_PAGES[subject.page];return page;}
 var aiTeamNav=[{
 \t\tkey: "runtimes",
