@@ -33,6 +33,14 @@ children
 });
 }
 //#endregion
+function ChatInput() {
+\tconst placeholder = agentAccessRevoked ? 'blocked' : 'ready';
+return {surface: {
+\t\t\tchildren: [
+\t\t\t\tselectedProject && null
+]}};
+}
+//#endregion
 var appRoutes = [{
 \t\t\t\tpath: "runtimes",
 element: null
