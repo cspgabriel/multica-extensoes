@@ -35,6 +35,8 @@ Os caminhos são detectados no computador de quem instala. A pasta padrão dos m
 
 ## Recursos
 
+- **Memória local de conversas (complemento separado):** exporta seus chats ativos e arquivados para Markdown, com índice para agentes e atualização a cada cinco minutos enquanto o workspace estiver aberto. Preserva a interface personalizada. Instale pelo pacote `multica-memoria-local-1.0.0-windows-x64.zip`; [manual e limites](docs/memoria-local.md). Para gerar: `node scripts/package-memory.cjs`.
+
 - **Estúdio de IA:** dez painéis abaixo de Ambientes de execução: ferramentas MCP, projetos e prévias, diff e revisão, restauração por arquivo, contexto e troca de agente, fluxos sequenciais, teste visual, uso e desempenho, comparação em worktrees e diagnóstico de extensões. [Manual e limites](docs/estudio-ia.md).
 - **Português do Brasil:** 25 catálogos e 6.942 entradas da interface, seletor de idioma, calendário e diálogos do desktop. O idioma é ativado localmente na primeira abertura após instalar. Veja [Tradução PT-BR](docs/traducao-pt-br.md).
 - **Docs:** leitura, editor Markdown, histórico e proteção contra gravações concorrentes.
