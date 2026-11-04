@@ -1,13 +1,13 @@
 # Multica Extensões
 
-Instalador independente para adicionar **Estúdio de IA com dez recursos**, **Docs**, **Editar com IA**, **Marketplace Composio** e **Pool de Contas IA** ao Multica Desktop no Windows.
+Pacote completo e público para Multica Desktop: **60 temas**, **bancada de chat**, **terminal integrado**, **memória local**, **backup opcional**, **Início**, **Automações**, **PT-BR**, **Estúdio de IA**, **Docs**, **Editar com IA**, **Marketplace Composio** e **Pool de Contas IA**. O ZIP inclui as customizações e dependências do terminal. Não exige login no GitHub nem acesso a repositório privado para instalar.
 
 **Primeira versão: Multica Desktop 0.7.2, Windows x64, build verificado.** Outras versões e pacotes modificados são recusados antes de alterar o aplicativo. Não distribui o Multica e não altera seu executável, assinatura ou fuses.
 
 ## Instalar
 
 1. Instale o [Multica Desktop](https://multica.ai) normalmente.
-2. Baixe `multica-extensoes-2.0.0-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/latest).
+2. Baixe `multica-extensoes-3.0.0-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/tag/v3.0.0).
 3. Extraia o ZIP e execute **Instalar.cmd**.
 4. Confirme a instalação. A interface será reaberta com os novos itens abaixo de Runtimes.
 
@@ -35,6 +35,12 @@ Os caminhos são detectados no computador de quem instala. A pasta padrão dos m
 
 ## Recursos
 
+- **60 temas:** galeria com prévia e aplicação à interface e aos módulos.
+- **Bancada de chat:** sessão, agente, modelo, runtime, MCPs, plugins, arquivos, plano, alterações, comandos `/`, filtros, agrupamento e modo compacto.
+- **Terminal integrado:** abas, divisão lado a lado e shells disponíveis no PC; node-pty e xterm acompanham o ZIP.
+- **Memória local:** ativação por conta e workspace, com conversas no disco do próprio usuário.
+- **Início e Automações:** painéis do workspace, agentes em blocos/lista e melhorias de navegação e chat.
+- **Backup de conversas:** opcional; configure um repositório privado seu com Git e GitHub CLI autenticados. Execute `scripts/setup-backup-repo.ps1 -Remote 'SEU_USUARIO/SEU_REPOSITORIO'` na pasta instalada `versions/3.0.0`. Não há destino de backup predefinido.
 - **Estúdio de IA:** dez painéis abaixo de Ambientes de execução: ferramentas MCP, projetos e prévias, diff e revisão, restauração por arquivo, contexto e troca de agente, fluxos sequenciais, teste visual, uso e desempenho, comparação em worktrees e diagnóstico de extensões. [Manual e limites](docs/estudio-ia.md).
 - **Português do Brasil:** 25 catálogos e 6.942 entradas da interface, seletor de idioma, calendário e diálogos do desktop. O idioma é ativado localmente na primeira abertura após instalar. Veja [Tradução PT-BR](docs/traducao-pt-br.md).
 - **Docs:** leitura, editor Markdown, histórico e proteção contra gravações concorrentes.
@@ -80,10 +86,11 @@ Salve rascunhos antes de instalar ou remover. Quando a interface está aberta, o
 
 ## Desenvolvimento e edição por IA
 
-Não há dependências npm. Com Node.js 22+:
+Com Node.js 22+, execute os testes. Para gerar a distribuição, instale antes as dependências fixadas do terminal (incluídas no ZIP):
 
 ```powershell
 npm test
+npm ci --prefix vendor/terminal --ignore-scripts
 npm run package
 ```
 
@@ -91,7 +98,7 @@ Os testes cobrem o formato ASAR, geração e validação do patch, instalação,
 
 O comando de empacotamento, executado no Windows, gera o ZIP, o bootstrap e `SHA256SUMS.txt` em `dist`.
 
-Os fontes instalados ficam em `versions/1.3.0`. Edite a interface em `src/ui`, o backend em `src/main` e o Pool em `pool`. Os documentos ficam em `data/docs`. Alterar o backend exige reiniciar a interface; menu e rotas exigem gerar um novo patch a partir do backup verificado. Leia [Manutenção com IA](docs/manutencao-ia.md).
+Os fontes instalados ficam em `versions/3.0.0`. Edite a interface em `src/ui`, o backend em `src/main` e o Pool em `pool`. Os documentos ficam em `data/docs`. Alterar o backend exige reiniciar a interface; menu e rotas exigem gerar um novo patch a partir do backup verificado. Leia [Manutenção com IA](docs/manutencao-ia.md).
 
 ## Privacidade e distribuição
 

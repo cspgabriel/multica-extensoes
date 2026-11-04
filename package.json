@@ -1,9 +1,14 @@
 {
   "name": "multica-extensoes",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "description": "Extensões locais para Multica Desktop no Windows",
   "license": "MIT",
-  "engines": { "node": ">=22" },
-  "scripts": { "test": "node --test tests/*.test.cjs", "package": "node scripts/package.cjs" }
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "package": "node scripts/package.cjs"
+  }
 }

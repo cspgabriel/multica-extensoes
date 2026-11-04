@@ -30,7 +30,7 @@ if (-not $Yes -and -not $PrepareOnly) {
 New-Item -ItemType Directory -Path $InstallRoot -Force | Out-Null
 $versionRoot = Join-Path $InstallRoot ('versions\' + $manifest.extensionVersion)
 New-Item -ItemType Directory -Path $versionRoot -Force | Out-Null
-foreach ($directory in @('src','pool','lib','scripts')) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot $directory) -Destination $versionRoot -Recurse -Force }
+foreach ($directory in @('src','pool','lib','scripts','vendor')) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot $directory) -Destination $versionRoot -Recurse -Force }
 foreach ($filename in @('package.json','compatibility.json','Instalar.ps1','Desinstalar.ps1','README.md','LICENSE','NOTICE.md')) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot $filename) -Destination $versionRoot -Force }
 $docsRoot = Join-Path $InstallRoot 'data\docs'
 New-Item -ItemType Directory -Path $docsRoot -Force | Out-Null

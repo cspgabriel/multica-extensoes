@@ -103,6 +103,35 @@
     } catch (error) { body.append(el('p', { class: 'error', text: error.message })); }
   }
 
+  async function chatDialog(app, connection) {
+    const body = openModal(`Conversar com agente · ${app.name}`, 'Escolha o agente. A integração será adicionada ao rascunho de um novo chat, sem enviar uma mensagem.');
+    const agents = el('select', { 'aria-label': 'Agente para conversar' });
+    const accounts = market.connections.filter(item => item.toolkit === app.slug && item.status === 'ACTIVE');
+    const account = el('select', { 'aria-label': 'Conta da integração' }, accounts.map(item => el('option', { value: item.id, text: `${item.name} · ${item.id}`, selected: item.id === connection?.id })));
+    body.append(field('Agente', agents));
+    if (!app.noAuth) body.append(field('Conta conectada', account));
+    body.append(el('p', { class: 'help', text: 'O acesso às ferramentas depende das permissões e do runtime do agente. Você pode verificar ou ativar esse acesso em Plugins dentro do chat.' }));
+    const start = button('Abrir chat', () => {
+      try {
+        const message = { agentId: agents.value, toolkit: app.slug, ...(app.noAuth ? {} : { connectionId: account.value }) };
+        if (!app.noAuth && !accounts.some(item => item.id === account.value)) throw new Error('Escolha uma conexão ativa.');
+        DesktopPluginModel.chatIntent(message, context.workspaceId);
+        modal.close();
+        navigate('chat', message);
+      } catch (error) { notify(error.message, true); }
+    }, 'button primary');
+    start.disabled = true;
+    body.append(el('div', { class: 'modal-actions' }, [button('Cancelar', () => modal.close()), start]));
+    try {
+      const available = await call('ai:agents', context);
+      if (!body.isConnected) return;
+      agents.replaceChildren(...available.map(item => el('option', { value: item.id, text: item.name })));
+      if (!available.length) agents.append(el('option', { value: '', text: 'Nenhum agente disponível neste PC e workspace' }));
+      start.disabled = !available.length || !app.noAuth && !accounts.length;
+      agents.focus();
+    } catch (error) { body.append(el('p', { class: 'error', text: error.message })); }
+  }
+
   function logo(app) {
     const fallback = el('span', { class: 'logo-fallback', text: app.name.slice(0, 1).toUpperCase(), 'aria-hidden': 'true' });
     if (!app.logo) return fallback;
@@ -126,7 +155,7 @@
       el('div', { class: 'card-head' }, [logo(app), el('div', {}, [el('h2', { text: app.name }), el('small', { text: app.slug })]), active ? el('span', { class: 'connected', text: `${active} conectada${active > 1 ? 's' : ''}` }) : null]),
       el('p', { text: app.description || 'Integração disponível no catálogo do Composio.' }),
       el('div', { class: 'card-tags' }, [el('span', { class: 'tag setup-tag' + (app.setup === 'panel' ? ' panel-tag' : ''), text: app.noAuth ? 'Sem autenticação' : app.setup === 'panel' ? 'Configuração no painel' : 'Conexão pelo marketplace' }), ...app.categories.slice(0, 2).map(category => el('span', { class: 'tag', text: category.name }))]),
-      el('div', { class: 'card-footer' }, [el('small', { text: `${app.toolsCount.toLocaleString('pt-BR')} ferramentas` }), el('div', { class: 'card-actions' }, [button('Explorar', () => detail(app)), action])]),
+      el('div', { class: 'card-footer' }, [el('small', { text: `${app.toolsCount.toLocaleString('pt-BR')} ferramentas` }), el('div', { class: 'card-actions' }, [button('Explorar', () => detail(app)), active || app.noAuth ? button('Conversar com agente', () => chatDialog(app), 'button primary') : null, action])]),
     ]);
   }
   function renderCards() {
@@ -170,7 +199,11 @@
       const data = await call('composio:connections', more ? { cursor: market.connectionsCursor } : {});
       market.connections = more ? [...market.connections, ...data.items] : data.items;
       market.connectionsCursor = data.nextCursor;
-      target.replaceChildren(...market.connections.map(item => el('div', { class: 'connection-item' }, [el('b', { text: item.name }), el('span', { text: item.status === 'ACTIVE' ? 'Conectada' : item.status === 'EXPIRED' ? 'Expirada' : item.status })])));
+      target.replaceChildren(...market.connections.map(item => el('article', { class: 'connection-item' }, [
+        el('div', {}, [el('b', { text: item.name }), el('span', { text: item.status === 'ACTIVE' ? 'Conectada' : item.status === 'EXPIRED' ? 'Expirada' : item.status })]),
+        el('small', { text: item.id }),
+        item.status === 'ACTIVE' ? button('Conversar com agente', () => chatDialog({ name: item.name, slug: item.toolkit }, item)) : null,
+      ])));
       if (!market.connections.length) target.append(el('p', { class: 'help', text: 'Nenhuma conexão para a identidade configurada. Conecte um app ou ajuste o ID de usuário em Configurar Composio.' }));
       if (data.nextCursor) target.append(button('Carregar mais conexões', () => loadConnections(true)));
       document.getElementById('connections-title').textContent = `Minhas conexões · ${market.connections.length}${data.nextCursor ? '+' : ''}`;
@@ -217,7 +250,7 @@
       body.append(el('ul', { class: 'tool-list' }, data.tools.map(tool => el('li', {}, [el('b', { text: tool.name }), el('p', { text: tool.description }), el('code', { text: tool.slug })]))));
       if (data.moreTools) body.append(el('p', { class: 'help', text: 'Exibindo as primeiras 15 ferramentas. A IA pode descobrir outras conforme a tarefa.' }));
       const connectButton = button(data.setup === 'panel' ? 'Configurar no painel' : 'Conectar conta', () => connect(data, connectButton), 'button primary');
-      body.append(el('div', { class: 'modal-actions' }, [button('Pedir tarefa à IA', () => aiDialog(data)), !data.noAuth ? connectButton : null]));
+      body.append(el('div', { class: 'modal-actions' }, [data.noAuth || market.connections.some(item => item.toolkit === data.slug && item.status === 'ACTIVE') ? button('Conversar com agente', () => chatDialog(data), 'button primary') : null, button('Pedir tarefa à IA', () => aiDialog(data)), !data.noAuth ? connectButton : null]));
     } catch (error) { loading.replaceWith(el('p', { class: 'error', text: error.message })); }
   }
   async function marketplace() {
@@ -328,8 +361,17 @@
     renderDoc();
   }
   document.getElementById('nav-docs').addEventListener('click', () => navigate('docs'));
+  document.getElementById('nav-themes').addEventListener('click', () => navigate('themes'));
   document.getElementById('ai-open').addEventListener('click', () => aiDialog());
   document.getElementById('settings-open').addEventListener('click', settings);
-  const begin = page === 'studio' ? window.mountStudio({el,button,call,notify,content,context,navigate}) : page === 'docs' ? docs().then(() => { if (query.get('ai') === '1') return aiDialog(); }) : marketplace();
+  let begin;
+  if (page === 'themes') {
+    document.getElementById('breadcrumb').textContent = 'Multica / Temas';
+    document.getElementById('ai-open').hidden = true;
+    document.getElementById('settings-open').hidden = true;
+    document.getElementById('nav-themes').setAttribute('aria-current','page');
+    begin = Promise.resolve().then(() => MulticaThemeGallery.render(content));
+  } else if (page === 'studio') begin = window.mountStudio({el,button,call,notify,content,context,navigate});
+  else begin = page === 'docs' ? docs().then(() => { if (query.get('ai') === '1') return aiDialog(); }) : marketplace();
   begin.catch(error => { content.replaceChildren(el('div', { class: 'error', text: error.message })); content.setAttribute('aria-busy', 'false'); });
 })();

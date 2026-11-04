@@ -4,11 +4,12 @@ const path=require('node:path');
 const crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
+if (!fs.existsSync(path.join(root,'vendor/terminal/node_modules/node-pty/package.json'))) throw Error('Execute npm ci --prefix vendor/terminal --ignore-scripts antes de empacotar.');
 const version=require('../package.json').version;
 const destination=process.env.MEXT_PACKAGE_OUTPUT?path.resolve(process.env.MEXT_PACKAGE_OUTPUT):path.join(root,'dist');
 const stage=path.join(destination,'package-'+crypto.randomUUID());
 fs.mkdirSync(stage,{recursive:true});
-const include=['src','pool','lib','docs','scripts/Common.ps1','compatibility.json','package.json','README.md','LICENSE','NOTICE.md','Instalar.ps1','Desinstalar.ps1','Instalar.cmd','Desinstalar.cmd'];
+const include=['src','pool','lib','vendor','docs','scripts/Common.ps1','scripts/setup-backup-repo.ps1','compatibility.json','package.json','README.md','LICENSE','NOTICE.md','Instalar.ps1','Desinstalar.ps1','Instalar.cmd','Desinstalar.cmd'];
 for(const item of include){const target=path.join(stage,item);fs.mkdirSync(path.dirname(target),{recursive:true});fs.cpSync(path.join(root,item),target,{recursive:true});}
 function normalize(directory){for(const entry of fs.readdirSync(directory,{withFileTypes:true})){const name=path.join(directory,entry.name);if(entry.isDirectory())normalize(name);else if(entry.name.endsWith('.ps1')){const text=fs.readFileSync(name,'utf8').replace(/^\uFEFF/,'');fs.writeFileSync(name,Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),Buffer.from(text)]));}else if(entry.name.endsWith('.cmd')){fs.writeFileSync(name,fs.readFileSync(name,'utf8').replace(/\r?\n/g,'\r\n'));}}}
 normalize(stage);

@@ -1,0 +1,11 @@
+{
+  "name": "multica-terminal-deps",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dependencias do patch chat-terminal: node-pty (processo main, N-API) e xterm (bundle do renderer).",
+  "dependencies": {
+    "node-pty": "1.1.0",
+    "@xterm/xterm": "6.0.0",
+    "@xterm/addon-fit": "0.11.0"
+  }
+}
