@@ -7,7 +7,7 @@ Pacote completo e público para Multica Desktop: **60 temas**, **bancada de chat
 ## Instalar
 
 1. Instale o [Multica Desktop](https://multica.ai) normalmente.
-2. Baixe `multica-extensoes-3.0.0-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/tag/v3.0.0).
+2. Baixe `multica-extensoes-3.1.0-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/tag/v3.1.0).
 3. Extraia o ZIP e execute **Instalar.cmd**.
 4. Confirme a instalação. A interface será reaberta com os novos itens abaixo de Runtimes.
 
@@ -37,10 +37,11 @@ Os caminhos são detectados no computador de quem instala. A pasta padrão dos m
 
 - **60 temas:** galeria com prévia e aplicação à interface e aos módulos.
 - **Bancada de chat:** sessão, agente, modelo, runtime, MCPs, plugins, arquivos, plano, alterações, comandos `/`, filtros, agrupamento e modo compacto.
+- **Modelos de reserva por agente:** no card Agente da sidebar, até 3 modelos (2º, 3º, 4º) tentados em ordem quando o principal falha. Claude Code usa o fallback nativo (`--fallback-model`); runtimes Amazon Bedrock via pi usam a extensão opcional `src/runtimes/amazon-bedrock/model-fallback.ts`. Outros runtimes não suportam. [Detalhes](docs/modelos-de-reserva.md).
 - **Terminal integrado:** abas, divisão lado a lado e shells disponíveis no PC; node-pty e xterm acompanham o ZIP.
 - **Memória local:** ativação por conta e workspace, com conversas no disco do próprio usuário.
 - **Início e Automações:** painéis do workspace, agentes em blocos/lista e melhorias de navegação e chat.
-- **Backup de conversas:** opcional; configure um repositório privado seu com Git e GitHub CLI autenticados. Execute `scripts/setup-backup-repo.ps1 -Remote 'SEU_USUARIO/SEU_REPOSITORIO'` na pasta instalada `versions/3.0.0`. Não há destino de backup predefinido.
+- **Backup de conversas:** opcional; configure um repositório privado seu com Git e GitHub CLI autenticados. Execute `scripts/setup-backup-repo.ps1 -Remote 'SEU_USUARIO/SEU_REPOSITORIO'` na pasta instalada `versions/3.1.0`. Não há destino de backup predefinido.
 - **Estúdio de IA:** dez painéis abaixo de Ambientes de execução: ferramentas MCP, projetos e prévias, diff e revisão, restauração por arquivo, contexto e troca de agente, fluxos sequenciais, teste visual, uso e desempenho, comparação em worktrees e diagnóstico de extensões. [Manual e limites](docs/estudio-ia.md).
 - **Português do Brasil:** 25 catálogos e 6.942 entradas da interface, seletor de idioma, calendário e diálogos do desktop. O idioma é ativado localmente na primeira abertura após instalar. Veja [Tradução PT-BR](docs/traducao-pt-br.md).
 - **Docs:** leitura, editor Markdown, histórico e proteção contra gravações concorrentes.
@@ -98,7 +99,7 @@ Os testes cobrem o formato ASAR, geração e validação do patch, instalação,
 
 O comando de empacotamento, executado no Windows, gera o ZIP, o bootstrap e `SHA256SUMS.txt` em `dist`.
 
-Os fontes instalados ficam em `versions/3.0.0`. Edite a interface em `src/ui`, o backend em `src/main` e o Pool em `pool`. Os documentos ficam em `data/docs`. Alterar o backend exige reiniciar a interface; menu e rotas exigem gerar um novo patch a partir do backup verificado. Leia [Manutenção com IA](docs/manutencao-ia.md).
+Os fontes instalados ficam em `versions/3.1.0`. Edite a interface em `src/ui`, o backend em `src/main` e o Pool em `pool`. Os documentos ficam em `data/docs`. Alterar o backend exige reiniciar a interface; menu e rotas exigem gerar um novo patch a partir do backup verificado. Leia [Manutenção com IA](docs/manutencao-ia.md).
 
 ## Privacidade e distribuição
 
