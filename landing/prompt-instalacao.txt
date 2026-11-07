@@ -1,7 +1,7 @@
-Instale o pacote completo público Multica Extensões 3.1.0 no meu Multica Desktop, usando somente minhas contas.
+Instale o pacote completo público Multica Extensões 3.2.0 no meu Multica Desktop, usando somente minhas contas.
 
-Fonte única: https://github.com/cspgabriel/multica-extensoes/releases/tag/v3.1.0
-ZIP: https://github.com/cspgabriel/multica-extensoes/releases/download/v3.1.0/multica-extensoes-3.1.0-windows-x64.zip
+Fonte única: https://github.com/cspgabriel/multica-extensoes/releases/tag/v3.2.0
+ZIP: https://github.com/cspgabriel/multica-extensoes/releases/download/v3.2.0/multica-extensoes-3.2.0-windows-x64.zip
 SHA-256: 5b990e6cb9e5183e6e4e0bf4f46a6192cf9ff18430df392be9a2e71d969eaae0
 
 1. Verifique sistema, arquitetura, versão e caminho do Multica. Compatibilidade: Windows x64, Multica Desktop 0.7.2 com hash original verificado. Leia README.md, compatibility.json e Instalar.ps1. Não force outro build nem faça downgrade automático.
@@ -9,5 +9,5 @@ SHA-256: 5b990e6cb9e5183e6e4e0bf4f46a6192cf9ff18430df392be9a2e71d969eaae0
 3. Prepare a validação com Instalar.ps1 -PrepareOnly. A instalação final é executada por mim com Instalar.cmd na sessão do Windows; não use credenciais de tarefa de agente. Preserve backups e meus dados. Não pare o daemon, não encerre processos por nome nem desative proteções do Electron.
 4. Se já houver uma versão pública anterior, use a mesma pasta de instalação para atualizar a partir do backup registrado. Se houver customização desconhecida, preserve-a e informe a incompatibilidade; não sobrescreva à força.
 5. Oriente-me a configurar minha própria chave e ID de usuário Composio no Marketplace local e conectar minhas contas por OAuth. Não copie .env, chaves, memórias, IDs de workspace, contas ou tokens de outra pessoa. Não peça segredos no chat.
-6. A ativação nos agentes é feita pelo proprietário em "Ativar nos meus agentes". Os CLIs e logins do Pool são configurados por mim. Backup GitHub é opcional: somente com meu repositório privado explicitamente indicado em scripts/setup-backup-repo.ps1 -Remote 'MEU_USUARIO/MEU_REPOSITORIO', na pasta instalada versions/3.1.0. Não crie ou envie backups sem meu pedido.
+6. A ativação nos agentes é feita pelo proprietário em "Ativar nos meus agentes". Os CLIs e logins do Pool são configurados por mim. Backup GitHub é opcional: somente com meu repositório privado explicitamente indicado em scripts/setup-backup-repo.ps1 -Remote 'MEU_USUARIO/MEU_REPOSITORIO', na pasta instalada versions/3.2.0. Não crie ou envie backups sem meu pedido.
 7. Verifique os módulos instalados, a galeria de temas, o terminal e a abertura do aplicativo. Informe o que foi efetivamente testado e o que depende da minha sessão. Para reverter, use Desinstalar.cmd; dados locais são preservados.

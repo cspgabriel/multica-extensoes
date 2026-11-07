@@ -1,13 +1,13 @@
 # Multica Extensões
 
-Pacote completo e público para Multica Desktop: **60 temas**, **bancada de chat**, **terminal integrado**, **memória local**, **backup opcional**, **Início**, **Automações**, **PT-BR**, **Estúdio de IA**, **Docs**, **Editar com IA**, **Marketplace Composio** e **Pool de Contas IA**. O ZIP inclui as customizações e dependências do terminal. Não exige login no GitHub nem acesso a repositório privado para instalar.
+Pacote completo e público para Multica Desktop: **60 temas**, **bancada de chat**, **terminal integrado**, **memória local**, **backup opcional**, **Início**, **Painel de agentes**, **Reuniões**, **Automações**, **PT-BR**, **Estúdio de IA**, **Docs**, **Editar com IA**, **Marketplace Composio** e **Pool de Contas IA**. O ZIP inclui as customizações e dependências do terminal. Não exige login no GitHub nem acesso a repositório privado para instalar.
 
 **Primeira versão: Multica Desktop 0.7.2, Windows x64, build verificado.** Outras versões e pacotes modificados são recusados antes de alterar o aplicativo. Não distribui o Multica e não altera seu executável, assinatura ou fuses.
 
 ## Instalar
 
 1. Instale o [Multica Desktop](https://multica.ai) normalmente.
-2. Baixe `multica-extensoes-3.1.0-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/tag/v3.1.0).
+2. Baixe `multica-extensoes-3.2.0-windows-x64.zip` na [release](https://github.com/cspgabriel/multica-extensoes/releases/tag/v3.2.0).
 3. Extraia o ZIP e execute **Instalar.cmd**.
 4. Confirme a instalação. A interface será reaberta com os novos itens abaixo de Runtimes.
 
@@ -38,10 +38,12 @@ Os caminhos são detectados no computador de quem instala. A pasta padrão dos m
 - **60 temas:** galeria com prévia e aplicação à interface e aos módulos.
 - **Bancada de chat:** sessão, agente, modelo, runtime, MCPs, plugins, arquivos, plano, alterações, comandos `/`, filtros, agrupamento e modo compacto.
 - **Modelos de reserva por agente:** no card Agente da sidebar, até 3 modelos (2º, 3º, 4º) tentados em ordem quando o principal falha. Claude Code usa o fallback nativo (`--fallback-model`); runtimes Amazon Bedrock via pi usam a extensão opcional `src/runtimes/amazon-bedrock/model-fallback.ts`. Outros runtimes não suportam. [Detalhes](docs/modelos-de-reserva.md).
+- **Painel de agentes:** menu próprio com KPIs dos últimos 30 dias, mapa de calor por agente, tarefas ao vivo, agentes que pedem atenção e ranking de saúde, com os dados do próprio Multica.
+- **Reuniões:** menu próprio que grava o microfone em trechos de 30 s e transcreve no seu PC com faster-whisper (o áudio não sai da máquina). Os arquivos ficam em `~/Multica-Reunioes`. O botão "Gerar notas e itens de ação" manda a transcrição para um agente seu, que devolve resumo, decisões, diagrama Mermaid e itens de ação. Requer Python com `pip install faster-whisper`; o modelo `small` (cerca de 480 MB) baixa no primeiro uso. [Detalhes](docs/reunioes.md).
 - **Terminal integrado:** abas, divisão lado a lado e shells disponíveis no PC; node-pty e xterm acompanham o ZIP.
 - **Memória local:** ativação por conta e workspace, com conversas no disco do próprio usuário.
 - **Início e Automações:** painéis do workspace, agentes em blocos/lista e melhorias de navegação e chat.
-- **Backup de conversas:** opcional; configure um repositório privado seu com Git e GitHub CLI autenticados. Execute `scripts/setup-backup-repo.ps1 -Remote 'SEU_USUARIO/SEU_REPOSITORIO'` na pasta instalada `versions/3.1.0`. Não há destino de backup predefinido.
+- **Backup de conversas:** opcional; configure um repositório privado seu com Git e GitHub CLI autenticados. Execute `scripts/setup-backup-repo.ps1 -Remote 'SEU_USUARIO/SEU_REPOSITORIO'` na pasta instalada `versions/3.2.0`. Não há destino de backup predefinido.
 - **Estúdio de IA:** dez painéis abaixo de Ambientes de execução: ferramentas MCP, projetos e prévias, diff e revisão, restauração por arquivo, contexto e troca de agente, fluxos sequenciais, teste visual, uso e desempenho, comparação em worktrees e diagnóstico de extensões. [Manual e limites](docs/estudio-ia.md).
 - **Português do Brasil:** 25 catálogos e 6.942 entradas da interface, seletor de idioma, calendário e diálogos do desktop. O idioma é ativado localmente na primeira abertura após instalar. Veja [Tradução PT-BR](docs/traducao-pt-br.md).
 - **Docs:** leitura, editor Markdown, histórico e proteção contra gravações concorrentes.
@@ -99,7 +101,7 @@ Os testes cobrem o formato ASAR, geração e validação do patch, instalação,
 
 O comando de empacotamento, executado no Windows, gera o ZIP, o bootstrap e `SHA256SUMS.txt` em `dist`.
 
-Os fontes instalados ficam em `versions/3.1.0`. Edite a interface em `src/ui`, o backend em `src/main` e o Pool em `pool`. Os documentos ficam em `data/docs`. Alterar o backend exige reiniciar a interface; menu e rotas exigem gerar um novo patch a partir do backup verificado. Leia [Manutenção com IA](docs/manutencao-ia.md).
+Os fontes instalados ficam em `versions/3.2.0`. Edite a interface em `src/ui`, o backend em `src/main` e o Pool em `pool`. Os documentos ficam em `data/docs`. Alterar o backend exige reiniciar a interface; menu e rotas exigem gerar um novo patch a partir do backup verificado. Leia [Manutenção com IA](docs/manutencao-ia.md).
 
 ## Privacidade e distribuição
 
