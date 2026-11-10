@@ -1,5 +1,7 @@
 # Modelos de reserva por agente
 
+> Desde a 3.3.0 a reserva principal é por IA (runtime + modelo): veja [IAs de reserva](ias-de-reserva.md). Esta página descreve a troca nativa de modelo dentro da mesma IA, que fica em **Avançado** no card Agente.
+
 O Multica guarda um modelo por agente. A partir da versão 3.1.0, o card **Agente** da sidebar do chat permite cadastrar até três modelos de reserva (2º, 3º e 4º), tentados em ordem quando o principal falha. Cada nova mensagem volta a tentar o principal primeiro.
 
 ## Claude Code
